@@ -5,6 +5,8 @@ return [
     'access_denied' => 'Accès réservé aux agents DGT.',
     'back_portal' => 'Retour portail citoyen',
     'nav' => [
+        'menu' => 'Ouvrir le menu',
+        'menu_close' => 'Fermer le menu',
         'dashboard' => 'Tableau de bord',
         'users' => 'Utilisateurs',
         'permits' => 'Permis',

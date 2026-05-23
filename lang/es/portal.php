@@ -38,6 +38,8 @@ return [
     'cancel' => 'Cancelar',
 
     'nav' => [
+        'menu' => 'Abrir menú',
+        'menu_close' => 'Cerrar menú',
         'dashboard' => 'Inicio',
         'digital' => 'Mis permisos',
         'points' => 'Mis puntos',

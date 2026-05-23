@@ -38,6 +38,8 @@ return [
     'cancel' => 'Annuler',
 
     'nav' => [
+        'menu' => 'Ouvrir le menu',
+        'menu_close' => 'Fermer le menu',
         'dashboard' => 'Accueil',
         'digital' => 'Mes permis',
         'points' => 'Mes points',

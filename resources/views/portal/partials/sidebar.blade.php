@@ -1,6 +1,6 @@
 @php
     $active = $portalNavActive ?? 'dashboard';
-    $nav = [
+    $portalNav = [
         ['id' => 'dashboard', 'label' => __('portal.nav.dashboard'), 'href' => portal_route('dashboard'), 'icon' => 'home'],
         ['id' => 'digital', 'label' => __('portal.nav.digital'), 'href' => portal_route('licence.digital'), 'icon' => 'card'],
         ['id' => 'qr', 'label' => __('portal.qr.generate_btn'), 'href' => portal_route('licence.qr'), 'icon' => 'card'],
@@ -16,6 +16,8 @@
         ['id' => 'profile', 'label' => __('portal.nav.profile'), 'href' => portal_route('portal.profile'), 'icon' => 'user'],
     ];
 @endphp
+
+{{-- Desktop --}}
 <aside class="hidden w-64 shrink-0 flex-col border-r border-gray-200 bg-white lg:flex" aria-label="{{ __('portal.brand') }}">
     <div class="border-b border-gray-100 px-5 py-5">
         <a href="{{ portal_route('home') }}" class="text-2xl font-bold tracking-tight text-[#004481]">
@@ -23,19 +25,7 @@
         </a>
     </div>
     <nav class="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3 text-sm font-medium">
-        @foreach ($nav as $item)
-            @if ($active === $item['id'])
-                <span class="flex items-center gap-3 rounded-lg border-l-4 border-[#004481] bg-sky-50 px-3 py-2.5 text-[#004481]">
-                    @include('midgt._nav-icon', ['icon' => $item['icon']])
-                    {{ $item['label'] }}
-                </span>
-            @else
-                <a href="{{ $item['href'] }}" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-gray-700 transition hover:bg-gray-50 hover:text-[#004481]">
-                    @include('midgt._nav-icon', ['icon' => $item['icon']])
-                    {{ $item['label'] }}
-                </a>
-            @endif
-        @endforeach
+        @include('portal.partials.sidebar-nav-links', ['portalNavActive' => $active, 'nav' => $portalNav])
     </nav>
     <div class="mt-auto space-y-0.5 border-t border-gray-100 p-3">
         <a href="{{ portal_route('sede.hub') }}" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#004481]">
@@ -54,3 +44,28 @@
         </form>
     </div>
 </aside>
+
+{{-- Mobile drawer --}}
+<div id="portal-nav-drawer" class="fixed inset-0 z-50 hidden lg:hidden" aria-hidden="true" role="dialog" aria-modal="true" aria-label="{{ __('portal.nav.menu') }}">
+    <div class="fixed inset-0 bg-black/50" data-mobile-nav-close aria-hidden="true"></div>
+    <aside data-mobile-nav-panel class="fixed inset-y-0 left-0 flex w-[min(100%,18rem)] flex-col bg-white shadow-xl">
+        <div class="flex items-center justify-between border-b border-gray-100 px-4 py-4">
+            <a href="{{ portal_route('home') }}" class="text-xl font-bold text-[#004481]">mi<span class="font-extrabold">DGT</span></a>
+            <button type="button" class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 hover:bg-gray-100" data-mobile-nav-close aria-label="{{ __('portal.nav.menu_close') }}">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <nav class="flex flex-1 flex-col gap-0.5 overflow-y-auto p-3 text-sm font-medium">
+            @include('portal.partials.sidebar-nav-links', ['portalNavActive' => $active, 'nav' => $portalNav])
+        </nav>
+        <div class="space-y-0.5 border-t border-gray-100 p-3">
+            <a href="{{ portal_route('sede.hub') }}" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">{{ __('portal.nav.sede') }}</a>
+            <a href="{{ portal_route('licence.status') }}" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">{{ __('portal.verification.check_status') }}</a>
+            <form method="post" action="{{ portal_route('logout') }}">
+                @csrf
+                <button type="submit" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-gray-500 hover:bg-gray-50">{{ __('portal.logout') }}</button>
+            </form>
+        </div>
+    </aside>
+</div>
+@include('partials.mobile-drawer-script', ['id' => 'portal-nav'])

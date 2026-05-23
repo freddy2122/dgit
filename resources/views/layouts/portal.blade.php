@@ -35,7 +35,8 @@
             <header class="sticky top-0 z-20 border-b border-gray-200 bg-white px-4 py-3 shadow-sm sm:px-6 lg:px-8">
                 <div class="mx-auto flex max-w-7xl items-center justify-between gap-4">
                     <div class="flex min-w-0 items-center gap-3 lg:hidden">
-                        <a href="{{ portal_route('home') }}" class="text-lg font-bold text-[#004481]">{{ __('portal.brand') }}</a>
+                        @include('partials.mobile-nav-toggle', ['id' => 'portal-nav', 'label' => __('portal.nav.menu')])
+                        <a href="{{ portal_route('home') }}" class="truncate text-lg font-bold text-[#004481]">{{ __('portal.brand') }}</a>
                     </div>
                     @hasSection('page_heading')
                         <div class="hidden min-w-0 flex-1 lg:block">
