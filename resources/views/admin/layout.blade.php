@@ -29,6 +29,10 @@
             </main>
         </div>
     </div>
+
+    @include('admin.partials.mobile-nav-drawer')
+    @include('partials.mobile-drawer-script', ['id' => 'admin-nav'])
+
     @stack('scripts')
 </body>
 </html>

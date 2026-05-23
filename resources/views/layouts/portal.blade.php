@@ -74,6 +74,10 @@
             @include('portal.partials.footer-locale')
         </div>
     </div>
+
+    @include('portal.partials.mobile-nav-drawer', ['portalNavActive' => $portalNavActive ?? 'dashboard'])
+    @include('partials.mobile-drawer-script', ['id' => 'portal-nav'])
+
     @stack('scripts')
 </body>
 </html>

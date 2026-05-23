@@ -2,7 +2,7 @@
 <button
     type="button"
     id="{{ $id }}-open"
-    class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 text-gray-700 hover:bg-gray-50 lg:hidden"
+    class="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-700 shadow-sm hover:bg-gray-50 lg:hidden"
     aria-controls="{{ $id }}-drawer"
     aria-expanded="false"
     aria-label="{{ $label }}"
