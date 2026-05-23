@@ -63,7 +63,11 @@
                 </div>
                 <div>
                     <label for="doc-exp" class="block text-sm font-medium text-gray-700">{{ __('sede.registro.doc_exp') }}</label>
-                    <input id="doc-exp" type="date" class="mt-1 w-full border border-gray-300 px-3 py-2.5 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
+                    @include('partials.form-date', [
+                        'name' => 'doc_exp',
+                        'id' => 'doc-exp',
+                        'class' => 'w-full border border-gray-300 px-3 py-2.5 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]',
+                    ])
                 </div>
                 <div>
                     <label for="phone" class="block text-sm font-medium text-gray-700">{{ __('sede.registro.phone') }}</label>

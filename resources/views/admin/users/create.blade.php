@@ -23,8 +23,12 @@
             <input type="text" name="nie" required class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 font-mono text-sm" />
         </div>
         <div>
-            <label class="text-xs font-semibold text-gray-500">{{ __('admin.birth_date') }}</label>
-            <input type="date" name="birth_date" required class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+            @include('partials.form-date', [
+                'name' => 'birth_date',
+                'required' => true,
+                'label' => __('admin.birth_date'),
+                'class' => 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm',
+            ])
         </div>
     </div>
     <div>

@@ -43,12 +43,7 @@
     $licenseCardBox = $licenseCardLayout['box'];
 @endphp
 
-@once
-    @push('head')
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=seaweed-script:400" rel="stylesheet">
-    @endpush
-@endonce
+@include('portal.partials.license-card-fonts')
 
 <div class="{{ $licenseCardWrap }} flex justify-center {{ $class ?? '' }}">
     <div class="{{ $licenseCardScale }} {{ $licenseCardBox }}">
@@ -67,7 +62,7 @@
                 <div class="flex shrink-0 flex-col gap-3">
                     @include('portal.partials.license-eu-spain', ['class' => $euBadgeClass])
                     <div class="">
-                        <span class="relative z-[3] inline-block shrink-0 pt-1 font-mono text-[17px] font-bold not-italic leading-none text-slate-900">6.</span>
+                        <span class="license-ocr relative z-[3] inline-block shrink-0 pt-1 text-[17px] font-bold not-italic leading-none text-slate-900">6.</span>
                         <div class="relative z-[2] {{ $photoBoxClass }} overflow-hidden bg-transparent">
                             @include('portal.partials.license-photo', [
                                 'user' => $user,
@@ -84,17 +79,17 @@
                 </div>
 
                 <div class="min-w-0 flex-1 pt-1">
-                    <p class="mb-3 flex flex-nowrap items-baseline gap-x-2 text-[13px] font-black uppercase italic leading-tight tracking-wide text-blue-900 sm:text-[15px]">
+                    <p class="license-admin mb-3 flex flex-nowrap items-baseline gap-x-2 text-[13px] italic leading-tight text-blue-900 sm:text-[15px]">
                         <span class="shrink-0">{{ __('portal.license.card_title') }}</span>
-                        <span class="shrink-0 font-bold text-blue-800">{{ __('portal.license.card_country') }}</span>
+                        <span class="shrink-0 text-blue-800">{{ __('portal.license.card_country') }}</span>
                     </p>
 
-                    <div class="font-mono text-[17px] italic leading-[1.45] text-slate-900 pt-6">
+                    <div class="license-ocr text-[17px] italic leading-[1.45] text-slate-900 pt-6">
                         <div class="grid grid-cols-[36px_1fr] gap-x-2 gap-y-0.5">
                             <span class="font-bold">1.</span>
-                            <span class="truncate font-bold uppercase">{{ $surname }}</span>
+                            <span class="license-admin truncate">{{ $surname }}</span>
                             <span class="font-bold">2.</span>
-                            <span class="truncate font-bold uppercase">{{ $given }}</span>
+                            <span class="license-admin truncate">{{ $given }}</span>
                             <span class="font-bold">3.</span>
                             <span>{{ $birthLabel }}</span>
                             <span class="font-bold">4a.</span>
@@ -130,7 +125,7 @@
 
             {{-- Bas : 9. catégorie (coin gauche) --}}
             <div class="relative min-h-[4rem] shrink-0" style="margin-top: -25px;">
-                <div class="absolute bottom-0 left-0 z-20 flex max-w-[48%] flex-wrap items-baseline gap-x-2 font-mono not-italic leading-tight text-slate-900">
+                <div class="license-ocr absolute bottom-0 left-0 z-20 flex max-w-[48%] flex-wrap items-baseline gap-x-2 not-italic leading-tight text-slate-900">
                     <span class="text-[15px] font-bold">9.</span>
                     <span class="text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-800"></span>
                     @if ($catDisplay !== '—')

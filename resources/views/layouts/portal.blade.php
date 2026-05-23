@@ -78,6 +78,7 @@
     @include('portal.partials.mobile-nav-drawer', ['portalNavActive' => $portalNavActive ?? 'dashboard'])
     @include('partials.mobile-drawer-script', ['id' => 'portal-nav'])
 
+    <script src="{{ asset('js/date-field.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>

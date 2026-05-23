@@ -90,6 +90,11 @@ return [
         'new_badge' => 'Nouveau',
     ],
 
+    'form' => [
+        'date_placeholder' => 'JJ/MM/AAAA',
+        'date_calendar' => 'Ouvrir le calendrier',
+    ],
+
     'multas' => [
         'contact_gestoria' => 'Le paiement des amendes se fait via votre gestoría (WhatsApp).',
         'appeal_sent' => 'Votre recours a été enregistré. Notre équipe vous contactera.',

@@ -37,12 +37,20 @@
                     <input type="text" name="category" value="{{ $lic?->category }}" placeholder="B" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
                 </div>
                 <div>
-                    <label class="text-xs font-semibold text-gray-500">{{ __('admin.issued_at') }}</label>
-                    <input type="date" name="issued_at" value="{{ $lic?->issued_at?->format('Y-m-d') }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                    @include('partials.form-date', [
+                        'name' => 'issued_at',
+                        'value' => $lic?->issued_at?->format('Y-m-d'),
+                        'label' => __('admin.issued_at'),
+                        'class' => 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                    ])
                 </div>
                 <div>
-                    <label class="text-xs font-semibold text-gray-500">{{ __('admin.valid_until') }}</label>
-                    <input type="date" name="valid_until" value="{{ $lic?->valid_until?->format('Y-m-d') }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                    @include('partials.form-date', [
+                        'name' => 'valid_until',
+                        'value' => $lic?->valid_until?->format('Y-m-d'),
+                        'label' => __('admin.valid_until'),
+                        'class' => 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                    ])
                 </div>
                 <div>
                     <label class="text-xs font-semibold text-gray-500">{{ __('admin.authority_code') }}</label>
@@ -114,7 +122,11 @@
                 @csrf
                 <input type="text" name="plate" placeholder="{{ __('admin.plate') }}" required class="rounded-lg border border-gray-300 px-3 py-2 text-sm" />
                 <input type="text" name="vehicle_type" placeholder="{{ __('admin.vehicle_type') }}" required class="rounded-lg border border-gray-300 px-3 py-2 text-sm" />
-                <input type="date" name="itv_valid_until" class="rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                @include('partials.form-date', [
+                    'name' => 'itv_valid_until',
+                    'label' => 'ITV',
+                    'class' => 'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                ])
                 <select name="status" class="rounded-lg border border-gray-300 px-3 py-2 text-sm">
                     <option value="valid">{{ __('portal.valid') }}</option>
                     <option value="pending">{{ __('portal.pending') }}</option>

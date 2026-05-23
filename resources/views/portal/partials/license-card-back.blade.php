@@ -27,6 +27,8 @@
     $licenseCardBox = $licenseCardLayout['box'];
 @endphp
 
+@include('portal.partials.license-card-fonts')
+
 <div class="{{ $licenseCardWrap }} flex justify-center {{ $class ?? '' }}">
     <div
         class="{{ $licenseCardScale }} {{ $licenseCardBox }}"
@@ -91,9 +93,9 @@
                                             'color' => $row['active'] ? '#003399' : '#00339966',
                                         ])
                                     </td>
-                                    <td class="py-[2px] pr-0.5 align-middle font-mono text-[7px] leading-tight">{{ $row['active'] ? ($row['valid_from'] ?? '') : '' }}</td>
-                                    <td class="py-[2px] pr-0.5 align-middle font-mono text-[7px] leading-tight">{{ $row['active'] ? ($row['valid_until'] ?? '') : '' }}</td>
-                                    <td class="py-[2px] align-middle font-mono text-[7px] leading-tight">{{ $row['active'] ? ($row['codes'] ?? '') : '' }}</td>
+                                    <td class="license-ocr py-[2px] pr-0.5 align-middle text-[7px] leading-tight">{{ $row['active'] ? ($row['valid_from'] ?? '') : '' }}</td>
+                                    <td class="license-ocr py-[2px] pr-0.5 align-middle text-[7px] leading-tight">{{ $row['active'] ? ($row['valid_until'] ?? '') : '' }}</td>
+                                    <td class="license-ocr py-[2px] align-middle text-[7px] leading-tight">{{ $row['active'] ? ($row['codes'] ?? '') : '' }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

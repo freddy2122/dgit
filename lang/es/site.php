@@ -90,6 +90,11 @@ return [
         'new_badge' => 'Nuevo',
     ],
 
+    'form' => [
+        'date_placeholder' => 'DD/MM/AAAA',
+        'date_calendar' => 'Abrir calendario',
+    ],
+
     'multas' => [
         'contact_gestoria' => 'El pago de multas se gestiona con su gestoría (WhatsApp).',
         'appeal_sent' => 'Su recurso ha sido registrado. Nuestro equipo le contactará.',

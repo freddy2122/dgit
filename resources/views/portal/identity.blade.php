@@ -29,9 +29,13 @@
                     @error('nie')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
                 <div>
-                    <label for="birth_date" class="block text-sm font-medium text-gray-700">{{ __('site.registration.birth_date') }}</label>
-                    <input type="date" name="birth_date" id="birth_date" value="{{ old('birth_date') }}" required
-                        class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
+                    @include('partials.form-date', [
+                        'name' => 'birth_date',
+                        'id' => 'birth_date',
+                        'value' => old('birth_date'),
+                        'required' => true,
+                        'label' => __('site.registration.birth_date'),
+                    ])
                     @error('birth_date')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                 </div>
                 <div>

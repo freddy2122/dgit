@@ -68,6 +68,7 @@
     </main>
 
     @include('layouts.partials.footer')
+    <script src="{{ asset('js/date-field.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>

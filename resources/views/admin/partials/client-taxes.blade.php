@@ -85,8 +85,12 @@
                 </select>
             </div>
             <div>
-                <label class="text-xs font-semibold text-gray-500">{{ __('admin.tax_due') }}</label>
-                <input type="date" name="due_date" value="{{ now()->addDays(14)->format('Y-m-d') }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                @include('partials.form-date', [
+                    'name' => 'due_date',
+                    'value' => now()->addDays(14)->format('Y-m-d'),
+                    'label' => __('admin.tax_due'),
+                    'class' => 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm',
+                ])
             </div>
             <div>
                 <label class="text-xs font-semibold text-gray-500">{{ __('admin.tax_amount') }} ({{ __('admin.tax_amount_override') }})</label>

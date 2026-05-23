@@ -63,7 +63,13 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label for="appointment_date" class="block text-xs font-medium text-gray-600">{{ __('portal.date') }}</label>
-                        <input type="date" id="appointment_date" name="appointment_date" required min="{{ now()->format('Y-m-d') }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:ring-1 focus:ring-[#004481]">
+                        @include('partials.form-date', [
+                            'name' => 'appointment_date',
+                            'id' => 'appointment_date',
+                            'value' => old('appointment_date'),
+                            'required' => true,
+                            'min' => now()->format('Y-m-d'),
+                        ])
                     </div>
                     <div>
                         <label for="appointment_time" class="block text-xs font-medium text-gray-600">{{ __('portal.time') }}</label>

@@ -33,6 +33,7 @@
     @include('admin.partials.mobile-nav-drawer')
     @include('partials.mobile-drawer-script', ['id' => 'admin-nav'])
 
+    <script src="{{ asset('js/date-field.js') }}" defer></script>
     @stack('scripts')
 </body>
 </html>
