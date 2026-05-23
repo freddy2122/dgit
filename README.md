@@ -5,6 +5,16 @@ Clone Laravel 10 + Tailwind du portail DGT (Sede Electrónica, miDGT, permis num
 
 ---
 
+## Déploiement (GitHub Actions)
+
+Push sur `main` → tests automatiques puis déploiement SSH sur votre serveur.
+
+Guide complet : [docs/DEPLOY-GITHUB-ACTIONS.md](docs/DEPLOY-GITHUB-ACTIONS.md)
+
+Secrets à configurer sur GitHub : `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `DEPLOY_PATH` (et optionnellement `SSH_PORT`).
+
+---
+
 ## Démarrage rapide
 
 ```bash
