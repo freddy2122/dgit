@@ -177,4 +177,10 @@ return [
     'settings_whatsapp_env_fallback' => 'Valor .env por defecto: :env (sustituido al guardar arriba).',
     'settings_save' => 'Guardar',
     'settings_saved' => 'Parámetros guardados.',
+    'send_whatsapp_client' => 'Enviar WhatsApp',
+    'send_whatsapp_client_hint' => 'Abre WhatsApp con el mismo texto que el e-mail al cliente (wa.me)',
+    'whatsapp_no_phone' => 'Sin teléfono del cliente — indique el móvil en la ficha de usuario',
+    'whatsapp_no_phone_short' => 'Sin tel.',
+    'whatsapp_flash_title' => 'Mensaje al cliente listo en WhatsApp',
+    'whatsapp_flash_hint' => 'El e-mail se ha enviado. Pulse para abrir WhatsApp hacia el cliente con el texto ya rellenado — solo falta enviar.',
 ];

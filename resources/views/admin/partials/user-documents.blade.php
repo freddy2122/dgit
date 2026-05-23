@@ -68,8 +68,16 @@
                 </div>
             @endforeach
         </div>
-        <button type="submit" class="rounded-lg bg-[#004481] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#003366]">
-            {{ __('admin.save_documents') }}
-        </button>
+        <div class="flex flex-wrap items-center gap-2">
+            <button type="submit" class="rounded-lg bg-[#004481] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#003366]">
+                {{ __('admin.save_documents') }}
+            </button>
+            @include('admin.partials.whatsapp-send', [
+                'user' => $user,
+                'titleKey' => 'admin.notif_documents_updated_title',
+                'bodyKey' => 'admin.notif_documents_updated_body',
+                'size' => 'sm',
+            ])
+        </div>
     </form>
 </section>

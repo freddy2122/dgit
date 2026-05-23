@@ -25,6 +25,7 @@
                 @if (session('status'))
                     <p class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</p>
                 @endif
+                @include('admin.partials.whatsapp-flash')
                 @yield('content')
             </main>
         </div>

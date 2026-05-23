@@ -8,8 +8,15 @@
     </div>
     <div class="flex flex-wrap gap-2">
         <a href="{{ route('admin.applications.create', ['user_id' => $user->id]) }}" class="rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">{{ __('admin.create_application') }}</a>
-        <form method="post" action="{{ route('admin.users.regenerate_code', $user) }}">@csrf
+        <form method="post" action="{{ route('admin.users.regenerate_code', $user) }}" class="flex flex-wrap items-center gap-2">@csrf
             <button type="submit" class="rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-800 hover:bg-gray-50">{{ __('admin.regenerate_code') }}</button>
+            @include('admin.partials.whatsapp-send', [
+                'user' => $user,
+                'titleKey' => 'admin.notif_code_regenerated_title',
+                'bodyKey' => 'admin.notif_code_regenerated_body',
+                'params' => ['code' => $user->verification_code ?? '—'],
+                'size' => 'sm',
+            ])
         </form>
     </div>
 </div>
@@ -83,8 +90,14 @@
                         @endforeach
                     </div>
                 </div>
-                <div class="sm:col-span-2">
+                <div class="sm:col-span-2 flex flex-wrap items-center gap-2">
                     <button type="submit" class="rounded-lg bg-[#004481] px-5 py-2 text-sm font-semibold text-white">{{ __('admin.save_license') }}</button>
+                    @include('admin.partials.whatsapp-send', [
+                        'user' => $user,
+                        'titleKey' => 'admin.notif_license_updated_title',
+                        'bodyKey' => 'admin.notif_license_updated_body',
+                        'size' => 'sm',
+                    ])
                 </div>
             </form>
             <form method="post" action="{{ route('admin.users.adjust_points', $user) }}" class="mt-6 flex flex-wrap items-end gap-3 border-t border-gray-100 pt-4">
@@ -97,7 +110,16 @@
                     <label class="text-xs font-semibold text-gray-500">{{ __('admin.points_reason') }}</label>
                     <input type="text" name="reason" required class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
                 </div>
-                <button type="submit" class="rounded-lg border border-[#004481] px-4 py-2 text-sm font-semibold text-[#004481]">{{ __('admin.apply_points') }}</button>
+                <div class="flex flex-wrap items-center gap-2">
+                    <button type="submit" class="rounded-lg border border-[#004481] px-4 py-2 text-sm font-semibold text-[#004481]">{{ __('admin.apply_points') }}</button>
+                    @include('admin.partials.whatsapp-send', [
+                        'user' => $user,
+                        'titleKey' => 'admin.notif_points_updated_title',
+                        'bodyKey' => 'admin.notif_points_updated_body',
+                        'params' => ['delta' => '±…'],
+                        'size' => 'sm',
+                    ])
+                </div>
             </form>
         </div>
 
@@ -132,7 +154,16 @@
                     <option value="pending">{{ __('portal.pending') }}</option>
                 </select>
                 <label class="flex items-center gap-2 text-sm sm:col-span-2"><input type="checkbox" name="is_motorcycle" value="1" /> {{ __('admin.motorcycle') }}</label>
-                <button type="submit" class="sm:col-span-2 rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white">{{ __('admin.add_vehicle') }}</button>
+                <div class="sm:col-span-2 flex flex-wrap items-center gap-2">
+                    <button type="submit" class="rounded-lg bg-slate-800 px-4 py-2 text-sm font-semibold text-white">{{ __('admin.add_vehicle') }}</button>
+                    @include('admin.partials.whatsapp-send', [
+                        'user' => $user,
+                        'titleKey' => 'admin.notif_vehicle_added_title',
+                        'bodyKey' => 'admin.notif_vehicle_added_body',
+                        'params' => ['plate' => '…'],
+                        'size' => 'sm',
+                    ])
+                </div>
             </form>
         </div>
 

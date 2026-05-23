@@ -351,4 +351,11 @@ return [
         'demo' => 'Área personal de demostración — sin enlace al sitio oficial de la DGT.',
         'copyright' => '© :year Espacio miDGT',
     ],
+
+    'whatsapp' => [
+        'outbound_greeting' => 'Hola :name,',
+        'outbound_footer' => 'Un saludo, su gestoría miDGT.',
+        'inbound_greeting' => 'Hola, le escribo sobre mi expediente miDGT:',
+        'email_button' => 'Ver en WhatsApp',
+    ],
 ];

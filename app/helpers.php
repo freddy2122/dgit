@@ -495,6 +495,95 @@ if (! function_exists('gestoria_whatsapp_payment_message')) {
     }
 }
 
+if (! function_exists('normalize_client_phone')) {
+    function normalize_client_phone(?string $phone): ?string
+    {
+        if ($phone === null || trim($phone) === '') {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', $phone) ?? '';
+        if (strlen($digits) < 9) {
+            return null;
+        }
+
+        if (str_starts_with($digits, '00')) {
+            $digits = substr($digits, 2);
+        }
+
+        if (! str_starts_with($digits, '34') && strlen($digits) === 9) {
+            $digits = '34'.$digits;
+        }
+
+        return $digits;
+    }
+}
+
+if (! function_exists('portal_whatsapp_outbound_message')) {
+    /** Message gestoría → client (admin envoie au numéro du client). */
+    function portal_whatsapp_outbound_message(\App\Models\User $user, string $title, string $body): string
+    {
+        $name = trim((string) ($user->first_name ?: $user->name ?: ''));
+
+        return trim(implode("\n\n", array_filter([
+            __('portal.whatsapp.outbound_greeting', ['name' => $name !== '' ? $name : __('portal.user_default')]),
+            $title,
+            $body,
+            __('portal.whatsapp.outbound_footer'),
+        ])));
+    }
+}
+
+if (! function_exists('portal_whatsapp_client_reply_message')) {
+    /** Message client → gestoría (lien dans l’e-mail). */
+    function portal_whatsapp_client_reply_message(string $title, string $body): string
+    {
+        return trim(implode("\n\n", array_filter([
+            __('portal.whatsapp.inbound_greeting'),
+            $title,
+            $body,
+        ])));
+    }
+}
+
+if (! function_exists('client_whatsapp_url')) {
+    function client_whatsapp_url(?\App\Models\User $user, string $message): ?string
+    {
+        $phone = normalize_client_phone($user?->phone);
+        if ($phone === null || $message === '') {
+            return null;
+        }
+
+        return 'https://wa.me/'.$phone.'?text='.rawurlencode($message);
+    }
+}
+
+if (! function_exists('gestoria_whatsapp_client_reply_url')) {
+    function gestoria_whatsapp_client_reply_url(string $title, string $body): string
+    {
+        return gestoria_whatsapp_url(portal_whatsapp_client_reply_message($title, $body));
+    }
+}
+
+if (! function_exists('admin_whatsapp_url_for_keys')) {
+    /**
+     * @param  array<string, mixed>  $params
+     */
+    function admin_whatsapp_url_for_keys(\App\Models\User $user, string $titleKey, string $bodyKey, array $params = []): ?string
+    {
+        $previous = app()->getLocale();
+        app()->setLocale(portal_locale());
+
+        $title = __($titleKey, $params);
+        $body = __($bodyKey, $params);
+        $message = portal_whatsapp_outbound_message($user, $title, $body);
+
+        app()->setLocale($previous);
+
+        return client_whatsapp_url($user, $message);
+    }
+}
+
 if (! function_exists('sede_local_service')) {
     /**
      * Bouton d’accès au trámite simulé sur ce portail (si configuré).

@@ -19,6 +19,9 @@ class PortalNotificationService
 
         $title = __($titleKey, $params);
         $body = __($bodyKey, $params);
+        $outboundMessage = portal_whatsapp_outbound_message($user, $title, $body);
+        $clientWhatsappUrl = client_whatsapp_url($user, $outboundMessage);
+        $gestoriaReplyUrl = gestoria_whatsapp_client_reply_url($title, $body);
 
         PortalNotification::query()->create([
             'user_id' => $user->id,
@@ -31,9 +34,25 @@ class PortalNotificationService
 
         App::setLocale($previous);
 
+        if ($clientWhatsappUrl && (request()->routeIs('admin.*') || request()->is('admin/*'))) {
+            session()->flash('admin_whatsapp_to_client', $clientWhatsappUrl);
+            session()->flash('admin_whatsapp_preview', $outboundMessage);
+        }
+
         if (config('portal.notify_by_email', true) && $user->email) {
             try {
-                Mail::to($user->email)->send(new PortalNotificationMail($user, $title, $body));
+                $mailLocale = portal_default_locale();
+                $previousMailLocale = App::getLocale();
+                App::setLocale($mailLocale);
+
+                Mail::to($user->email)->send(new PortalNotificationMail(
+                    $user,
+                    $title,
+                    $body,
+                    $gestoriaReplyUrl,
+                ));
+
+                App::setLocale($previousMailLocale);
             } catch (\Throwable $e) {
                 Log::warning('Portal notification email failed: '.$e->getMessage());
             }
