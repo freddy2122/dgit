@@ -55,12 +55,17 @@ jobs:
           npm run build
 
       - name: Configure SSH (clé déploy)
-        if: ${{ secrets.SSH_PRIVATE_KEY != '' }}
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT || 65002 }}
         run: |
-          mkdir -p ~/.ssh
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.SSH_PORT || 65002 }}" -H "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          if [ -n "${SSH_PRIVATE_KEY}" ]; then
+            mkdir -p ~/.ssh
+            printf '%s\n' "${SSH_PRIVATE_KEY}" > ~/.ssh/deploy_key
+            chmod 600 ~/.ssh/deploy_key
+            ssh-keyscan -p "${SSH_PORT}" -H "${SSH_HOST}" >> ~/.ssh/known_hosts 2>/dev/null || true
+          fi
 
       - name: Deploy via rsync (SSH)
         env:
