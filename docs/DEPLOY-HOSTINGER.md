@@ -1,84 +1,99 @@
-# Déploiement Hostinger (mutualisé) + sous-domaine
+# Déploiement Hostinger (mutualisé) + sous-domaine — **SSH**
 
-GitHub Actions envoie le projet en **FTP/FTPS** à chaque push sur `main` (après les tests).
+GitHub Actions envoie le projet en **rsync over SSH** à chaque push sur `main` (après les tests), puis exécute `migrate` et les caches Laravel.
 
 Dépôt : [github.com/freddy2122/dgit](https://github.com/freddy2122/dgit)
 
 ---
 
-## Étape 1 — Créer le sous-domaine dans hPanel
+## Étape 1 — Activer SSH sur Hostinger
 
-1. Connectez-vous à [hPanel Hostinger](https://hpanel.hostinger.com).
-2. **Domaines** → **Sous-domaines** → **Créer**.
-3. Exemple : `midgt` → `midgt.votredomaine.com`.
-4. Notez le dossier créé, souvent :
-   - `/domains/midgt.votredomaine.com/`
-
----
-
-## Étape 2 — Racine web = dossier `public` (recommandé)
-
-1. **Domaines** → votre sous-domaine → **Paramètres du site** / **Racine du document**.
-2. Définir la racine sur :
-   ```
-   /domains/midgt.votredomaine.com/public
-   ```
-3. Le workflow FTP envoie tout le projet dans `/domains/midgt.votredomaine.com/` (secret `FTP_REMOTE_DIR`).
-
----
-
-## Étape 3 — Compte FTP
-
-1. hPanel → **Fichiers** → **Comptes FTP** (ou **FTP Accounts**).
-2. Créez un compte ou utilisez le compte principal.
+1. [hPanel](https://hpanel.hostinger.com) → **Avancé** → **Accès SSH** (ou **SSH Access**).
+2. **Activer** l’accès SSH si ce n’est pas déjà fait.
 3. Notez :
-   - **Hôte** : souvent `ftp.votredomaine.com` ou l’IP indiquée
-   - **Utilisateur** / **Mot de passe**
-   - **Port** : `21`
-   - **Protocole** : **FTPS** (FTP avec SSL)
+   - **Hôte** (hostname ou IP)
+   - **Port** : souvent **65002** (pas 22)
+   - **Utilisateur** : ex. `u123456789`
+   - **Mot de passe** SSH (ou ajoutez une **clé publique** dans hPanel — recommandé)
 
-Testez avec FileZilla avant GitHub Actions.
+Test depuis votre Mac :
+
+```bash
+ssh -p 65002 u123456789@votre-host.hostinger.com
+```
+
+Une fois connecté, allez dans le dossier du sous-domaine et notez le chemin absolu :
+
+```bash
+cd domains/midgt.votredomaine.com && pwd
+# Exemple : /home/u123456789/domains/midgt.votredomaine.com
+```
+
+Ce chemin = secret GitHub **`SSH_DEPLOY_PATH`**.
 
 ---
 
-## Étape 4 — Secrets GitHub
+## Étape 2 — Créer le sous-domaine
+
+1. **Domaines** → **Sous-domaines** → **Créer** (ex. `midgt.votredomaine.com`).
+2. **Racine du document** → pointer vers le dossier **`public`** :
+   ```
+   /home/u123456789/domains/midgt.votredomaine.com/public
+   ```
+   (le chemin exact dépend de votre compte ; utilisez `pwd` en SSH.)
+
+---
+
+## Étape 3 — Secrets GitHub (obligatoires)
 
 **GitHub** → dépôt **dgit** → **Settings** → **Secrets and variables** → **Actions** :
 
-| Secret | Exemple | Obligatoire |
-|--------|---------|-------------|
-| `FTP_HOST` | `ftp.votredomaine.com` | Oui |
-| `FTP_USERNAME` | `u123456789` | Oui |
-| `FTP_PASSWORD` | mot de passe FTP | Oui |
-| `FTP_REMOTE_DIR` | `/domains/midgt.votredomaine.com` | Oui |
-| `FTP_PORT` | `21` | Non |
-| `FTP_PROTOCOL` | `ftps` | Non (défaut `ftps`) |
+| Secret | Description | Obligatoire |
+|--------|-------------|-------------|
+| `SSH_HOST` | Hostname SSH Hostinger | Oui |
+| `SSH_USER` | Utilisateur SSH (ex. `u123456789`) | Oui |
+| `SSH_DEPLOY_PATH` | Chemin absolu du projet (sans `/` final) | Oui |
+| `SSH_PORT` | Port SSH (souvent `65002`) | Non |
+| `SSH_PASSWORD` | Mot de passe SSH | Oui * |
+| `SSH_PRIVATE_KEY` | Clé privée PEM (déploiement) | Oui * |
 
-`FTP_REMOTE_DIR` : **sans** slash final, chemin exact affiché dans le gestionnaire de fichiers Hostinger.
+\* **Soit** mot de passe **soit** clé privée. La clé est plus sûre : générez une paire dédiée au CI, ajoutez la **publique** dans hPanel, la **privée** dans `SSH_PRIVATE_KEY`.
 
-### SSH optionnel (offres avec terminal SSH)
-
-Si hPanel propose **SSH** (souvent port **65002**) :
-
-| Secret | Exemple |
-|--------|---------|
-| `SSH_HOST` | IP ou hostname SSH Hostinger |
-| `SSH_USER` | `u123456789` |
-| `SSH_PASSWORD` | mot de passe SSH |
-| `SSH_DEPLOY_PATH` | `/home/u123/domains/midgt.votredomaine.com` |
-| `SSH_PORT` | `65002` |
-
-Si ces secrets sont renseignés, le workflow exécute `migrate` et `optimize` après l’envoi FTP.
+Le workflow **n’envoie jamais** le fichier `.env` (à créer une seule fois sur le serveur).
 
 ---
 
-## Étape 5 — Fichier `.env` sur le serveur (une fois)
+## Étape 4 — Clé SSH pour GitHub (recommandé)
 
-Le `.env` **n’est jamais** envoyé par GitHub (sécurité).
+Sur votre Mac :
 
-1. hPanel → **Gestionnaire de fichiers** → dossier du sous-domaine.
-2. Copiez `.env.example` en `.env`.
-3. Modifiez au minimum :
+```bash
+ssh-keygen -t ed25519 -C "github-deploy-dgit" -f ~/.ssh/hostinger_dgit -N ""
+```
+
+1. Contenu de `~/.ssh/hostinger_dgit.pub` → hPanel → SSH → **Ajouter une clé SSH**.
+2. Contenu de `~/.ssh/hostinger_dgit` (clé **privée**) → secret GitHub **`SSH_PRIVATE_KEY`** (tout le bloc, y compris `BEGIN` / `END`).
+3. Vous pouvez laisser `SSH_PASSWORD` vide si vous n’utilisez que la clé.
+
+Test :
+
+```bash
+ssh -i ~/.ssh/hostinger_dgit -p 65002 u123456789@votre-host.hostinger.com
+```
+
+---
+
+## Étape 5 — `.env` et base MySQL (une fois, sur le serveur)
+
+En SSH :
+
+```bash
+cd /home/u123456789/domains/midgt.votredomaine.com
+cp .env.example .env
+nano .env   # ou éditeur hPanel
+```
+
+Minimum :
 
 ```env
 APP_NAME="miDGT"
@@ -89,8 +104,8 @@ APP_URL=https://midgt.votredomaine.com
 DB_CONNECTION=mysql
 DB_HOST=localhost
 DB_PORT=3306
-DB_DATABASE=u123_dgit
-DB_USERNAME=u123_dgit
+DB_DATABASE=...
+DB_USERNAME=...
 DB_PASSWORD=...
 
 SESSION_DRIVER=file
@@ -98,60 +113,39 @@ CACHE_DRIVER=file
 QUEUE_CONNECTION=sync
 ```
 
-4. Base MySQL : hPanel → **Bases de données** → créer DB + utilisateur → associer.
+1. hPanel → **Bases de données** → créer DB + utilisateur.
+2. `php artisan key:generate` (en SSH, dans le dossier du projet).
+3. Première migration (ou laisser le workflow le faire au premier deploy) :
+   ```bash
+   php artisan migrate --force
+   ```
 
-5. Générer `APP_KEY` :
-   - Terminal SSH : `php artisan key:generate`
-   - Ou localement : `php artisan key:generate --show` puis coller dans `.env` sur le serveur.
+Permissions :
 
-6. Migrations (une fois) :
-   - SSH : `cd .../domains/midgt... && php artisan migrate --force`
-   - Ou import SQL via phpMyAdmin si pas de SSH.
-
----
-
-## Étape 6 — Permissions (important)
-
-Dans le gestionnaire de fichiers, dossiers en **755**, fichiers en **644**.
-
-Écriture pour Laravel (via hPanel ou FTP) :
-
-- `storage/` → **775** (récursif)
-- `bootstrap/cache/` → **775**
+```bash
+chmod -R ug+rwx storage bootstrap/cache
+```
 
 ---
 
-## Étape 7 — Lancer le déploiement
+## Étape 6 — Lancer le déploiement
 
 - **Automatique** : `git push` sur `main`.
 - **Manuel** : GitHub → **Actions** → **Deploy Hostinger** → **Run workflow**.
 
-Vérifiez l’onglet **Actions** : job vert = fichiers envoyés.
+Le job :
 
----
-
-## Si vous ne pouvez pas changer la racine vers `/public`
-
-Structure alternative :
-
-```
-/domains/midgt.votredomaine.com/
-    app/, vendor/, storage/, …
-    public_html/          ← contenu du dossier public/ du projet
-        .htaccess
-        build/
-        index.php         ← utiliser deploy/hostinger-public_html-index.php
-```
-
-Copiez `deploy/hostinger-public_html-index.php` vers `public_html/index.php` après le premier déploiement.
+1. Lance les tests
+2. `composer install --no-dev` + `npm run build`
+3. **rsync** vers `SSH_DEPLOY_PATH`
+4. **SSH** : `migrate`, `config:cache`, `route:cache`, etc.
 
 ---
 
 ## Vérification
 
-- `https://midgt.votredomaine.com/fr` — accueil
-- `https://midgt.votredomaine.com/fr/login`
-- `https://midgt.votredomaine.com/admin` — back-office
+- `https://midgt.votredomaine.com/fr`
+- `https://midgt.votredomaine.com/admin`
 
 ---
 
@@ -159,16 +153,23 @@ Copiez `deploy/hostinger-public_html-index.php` vers `public_html/index.php` apr
 
 | Problème | Solution |
 |----------|----------|
-| Erreur FTP GitHub | Vérifier FTPS, mot de passe, `FTP_REMOTE_DIR` |
-| 403 / page blanche | Racine web → `/public` ; vérifier `.htaccess` |
-| 500 | Permissions `storage` ; logs dans `storage/logs/laravel.log` |
-| CSS/JS manquants | `npm run build` est fait dans Actions ; vérifier `public/build` sur le serveur |
-| `.env` manquant | Créer `.env` manuellement sur Hostinger |
+| `Permission denied (publickey)` | Clé publique dans hPanel ; ou `SSH_PASSWORD` correct |
+| `Connection refused` | Vérifier **port 65002** ; SSH activé dans hPanel |
+| Chemin rsync incorrect | `SSH_DEPLOY_PATH` = sortie de `pwd` dans le dossier du sous-domaine |
+| 500 après deploy | `storage/` et `bootstrap/cache/` en écriture ; voir `storage/logs/laravel.log` |
+| `.env` manquant | Créer `.env` sur le serveur (jamais dans Git) |
+| `php: command not found` en SSH | Utiliser le binaire indiqué par Hostinger, ex. `php82 artisan migrate` |
 
 ---
 
 ## PHP Hostinger
 
-Choisissez **PHP 8.2** (ou 8.1 minimum) pour le sous-domaine dans hPanel → **PHP Configuration**.
+hPanel → **Configuration PHP** sur le sous-domaine → **PHP 8.2** (minimum 8.1).
 
-Extensions utiles : `mbstring`, `openssl`, `pdo_mysql`, `tokenizer`, `xml`, `ctype`, `json`, `gd`, `zip`, `curl`.
+Extensions : `mbstring`, `openssl`, `pdo_mysql`, `tokenizer`, `xml`, `ctype`, `json`, `gd`, `zip`, `curl`.
+
+---
+
+## Racine web sans `/public` (cas rare)
+
+Si vous ne pouvez pas changer la racine vers `public/`, voir `deploy/hostinger-public_html-index.php` dans le dépôt.
