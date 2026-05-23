@@ -25,7 +25,7 @@ composer install
 cp .env.example .env   # si besoin
 php artisan key:generate
 php artisan migrate
-php artisan db:seed --class=AdminUserSeeder
+php artisan admin:seed
 php artisan serve
 ```
 

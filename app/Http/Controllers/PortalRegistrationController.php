@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Mail\OtpVerificationMail;
-use App\Mail\WelcomePortalMail;
 use App\Models\RegistrationDraft;
 use App\Models\User;
 use App\Services\PortalUserDataProvisioner;
@@ -11,6 +10,7 @@ use App\Services\UserDocumentService;
 use App\Support\VerificationCode;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -97,18 +97,12 @@ class PortalRegistrationController extends Controller
             ]);
         }
 
-        $inactive = User::query()
+        User::query()
             ->where(function ($q) use ($nie, $email) {
                 $q->where('nie', $nie)->orWhere('email', $email);
             })
             ->where('is_active', false)
-            ->first();
-
-        if ($inactive) {
-            throw ValidationException::withMessages([
-                'email' => __('site.registration.account_inactive'),
-            ]);
-        }
+            ->delete();
 
         $code = (string) random_int(100000, 999999);
 
@@ -237,7 +231,7 @@ class PortalRegistrationController extends Controller
             'birth_date' => $draft->birth_date,
             'address' => $validated['address'],
             'auth_method' => $draft->auth_method,
-            'is_active' => false,
+            'is_active' => true,
             'dossier_number' => $dossier,
             'verification_code' => VerificationCode::generate(),
             'dni_recto_path' => null,
@@ -259,7 +253,7 @@ class PortalRegistrationController extends Controller
             'dni_recto_path' => $user->dni_recto_path,
             'dni_verso_path' => $user->dni_verso_path,
             'dossier_number' => $dossier,
-            'activation_token' => $activationToken,
+            'activation_token' => null,
             'user_id' => $user->id,
             'completed_at' => now(),
         ]);
@@ -267,13 +261,13 @@ class PortalRegistrationController extends Controller
         PortalUserDataProvisioner::ensureProfile($user->fresh());
         PortalUserDataProvisioner::ensureEmptyLicense($user);
 
-        $activationUrl = route('portal.activate', ['token' => $activationToken], true);
-
-        Mail::to($user->email)->send(new WelcomePortalMail($user, $activationUrl));
-
         session()->forget([self::SESSION_AUTH, self::SESSION_DRAFT]);
 
-        return redirect()->route('login')->with('status', __('site.registration.registered'));
+        Auth::login($user);
+        $request->session()->regenerate();
+
+        return redirect()->to(portal_route('dashboard'))
+            ->with('portal_success', __('site.registration.registered'));
     }
 
     public function activate(string $token): RedirectResponse
@@ -286,7 +280,11 @@ class PortalRegistrationController extends Controller
         $user->update(['is_active' => true]);
         $draft->update(['activation_token' => null]);
 
-        return redirect()->route('login')->with('status', __('site.registration.activated'));
+        Auth::login($user);
+        request()->session()->regenerate();
+
+        return redirect()->to(portal_route('dashboard'))
+            ->with('portal_success', __('site.registration.activated'));
     }
 
     private function currentDraft(): ?RegistrationDraft

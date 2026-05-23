@@ -115,10 +115,12 @@ QUEUE_CONNECTION=sync
 
 1. hPanel → **Bases de données** → créer DB + utilisateur.
 2. `php artisan key:generate` (en SSH, dans le dossier du projet).
-3. Première migration (ou laisser le workflow le faire au premier deploy) :
+3. Première migration + compte admin (ou laisser le workflow faire `migrate`) :
    ```bash
    php artisan migrate --force
+   php artisan admin:seed
    ```
+   Identifiants par défaut : `admin@dgt.local` / `admin123` → `/admin` (changez le mot de passe ensuite).
 
 Permissions :
 

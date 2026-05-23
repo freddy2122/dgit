@@ -10,19 +10,22 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        $email = config('admin.seed_email');
+        $password = config('admin.seed_password');
+
         User::query()->updateOrCreate(
-            ['email' => 'admin@dgt.local'],
+            ['email' => $email],
             [
-                'name' => 'Agent DGT Demo',
-                'first_name' => 'Agent',
+                'name' => 'Administrateur',
+                'first_name' => 'Admin',
                 'last_name' => 'DGT',
-                'password' => Hash::make('admin123'),
+                'password' => Hash::make($password),
                 'role' => 'admin',
                 'is_active' => true,
                 'nie' => 'ADMIN0000X',
             ]
         );
 
-        $this->command?->info('Compte admin : admin@dgt.local / admin123 → /admin');
+        $this->command?->info("Compte admin : {$email} → /admin (mot de passe = celui défini dans ADMIN_PASSWORD ou admin123)");
     }
 }

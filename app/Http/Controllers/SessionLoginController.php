@@ -41,7 +41,7 @@ class SessionLoginController extends Controller
             $request->session()->regenerate();
 
             throw ValidationException::withMessages([
-                'email' => 'Votre compte n’est pas encore activé. Utilisez le lien reçu par e-mail après votre inscription.',
+                'email' => __('site.registration.account_not_active'),
             ]);
         }
 

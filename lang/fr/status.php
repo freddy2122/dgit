@@ -39,7 +39,7 @@ return [
     'no_result' => 'Aucun dossier ne correspond aux informations saisies.',
     'no_result_hint' => 'Vérifiez votre code ou vos données. Si vous venez de vous inscrire, activez votre compte par e-mail.',
     'search_required' => 'Saisissez votre code de vérification ou votre DNI/NIE avec votre date de naissance.',
-    'account_inactive_notice' => 'Compte trouvé : votre dossier est visible, mais l’accès à miDGT reste inactif tant que vous n’avez pas cliqué sur le lien d’activation reçu par e-mail.',
+    'account_inactive_notice' => 'Compte trouvé : votre dossier est visible, mais l’accès à miDGT est inactif. Contactez votre gestoría.',
     'login_cta' => 'Accéder à mon espace miDGT',
     'register_cta' => 'Créer mon compte',
     'auth_code_info' => 'Votre code personnel de vérification :',

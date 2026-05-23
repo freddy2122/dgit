@@ -124,9 +124,11 @@ class PortalPageController extends Controller
             'signature' => $request->file('signature'),
         ]);
 
-        $target = $request->input('redirect_to') === 'licence.digital'
-            ? portal_route('licence.digital')
-            : portal_route('portal.profile');
+        $target = match ($request->input('redirect_to')) {
+            'licence.digital' => portal_route('licence.digital'),
+            'portal.profile' => portal_route('portal.profile'),
+            default => portal_route('dashboard'),
+        };
 
         return redirect()
             ->to($target)

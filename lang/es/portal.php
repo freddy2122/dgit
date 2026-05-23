@@ -176,7 +176,7 @@ return [
         'connect_and_continue' => 'Acceder con Cl@ve y continuar',
         'wizard_hint' => 'Recorrido en 4 páginas: identidad → código → contraseña',
         'session_ok' => 'Sesión Cl@ve',
-        'account_inactive' => 'Cuenta pendiente de activación por correo.',
+        'account_inactive' => 'Cuenta inactiva. Contacte con la gestoría.',
         'no_account_register' => 'No hay cuenta portal con este DNI/NIE. Elija inscripción.',
         'doc_type' => 'Tipo de documento',
         'validation_nie_required' => 'El NIE es obligatorio.',

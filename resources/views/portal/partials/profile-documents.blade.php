@@ -48,6 +48,7 @@
 
     <form method="post" action="{{ portal_route('portal.profile.documents') }}" enctype="multipart/form-data" class="border-t border-gray-100 px-5 py-5">
         @csrf
+        <input type="hidden" name="redirect_to" value="dashboard" />
         <p class="text-sm font-medium text-gray-800">{{ __('portal.profile.upload_title') }}</p>
         <p class="mt-1 text-xs text-gray-500">{{ __('portal.profile.upload_hint') }}</p>
         <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

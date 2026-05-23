@@ -51,7 +51,7 @@ return [
     'no_result' => 'No se ha encontrado ningún expediente con los datos indicados.',
     'no_result_hint' => 'Compruebe el código de verificación o sus datos. Si acaba de registrarse, active su cuenta por correo electrónico.',
     'search_required' => 'Introduzca su código de verificación o su DNI/NIE con su fecha de nacimiento.',
-    'account_inactive_notice' => 'Cuenta encontrada: puede ver su expediente, pero el acceso a miDGT sigue inactivo hasta que active el enlace recibido por correo.',
+    'account_inactive_notice' => 'Cuenta encontrada: puede ver su expediente, pero el acceso a miDGT está inactivo. Contacte con su gestoría.',
     'login_cta' => 'Acceder a mi espacio miDGT',
     'register_cta' => 'Crear mi cuenta',
     'auth_code_info' => 'Su código personal de verificación:',

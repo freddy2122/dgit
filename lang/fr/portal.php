@@ -177,7 +177,7 @@ return [
         'connect_and_continue' => 'Cl@ve puis continuer',
         'wizard_hint' => 'Parcours en 4 pages : identité → code → mot de passe',
         'session_ok' => 'Session Cl@ve',
-        'account_inactive' => 'Compte en attente d’activation par e-mail.',
+        'account_inactive' => 'Compte inactif. Contactez la gestoría.',
         'no_account_register' => 'Aucun compte portail pour ce DNI/NIE. Choisissez l’inscription.',
         'doc_type' => 'Type de document',
         'validation_nie_required' => 'Le NIE est obligatoire.',
