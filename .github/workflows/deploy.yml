@@ -1,4 +1,5 @@
-name: Deploy
+# Déploiement Hostinger (mutualisé) — sous-domaine via FTP/FTPS
+name: Deploy Hostinger
 
 on:
   push:
@@ -6,7 +7,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-production
+  group: deploy-hostinger
   cancel-in-progress: true
 
 jobs:
@@ -26,40 +27,75 @@ jobs:
           php artisan key:generate
       - run: php artisan test
 
-  deploy:
-    name: Deploy to server
+  build-and-deploy:
+    name: Build et envoi FTP (Hostinger)
     needs: tests
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name: Deploy via SSH
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, xml, ctype, curl, json, pdo, mysql, gd, zip
+
+      - name: Install PHP dependencies (production)
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Build front assets (Vite)
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy to Hostinger (FTP/FTPS)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ${{ secrets.FTP_PROTOCOL || 'ftps' }}
+          local-dir: ./
+          server-dir: ${{ secrets.FTP_REMOTE_DIR }}/
+          log-level: minimal
+          dangerous-clean-slate: false
+          exclude: |
+            **/.git*
+            **/.git/**
+            **/.github/**
+            **/node_modules/**
+            **/tests/**
+            **/.env
+            **/.env.*
+            **/.editorconfig
+            **/phpunit.xml
+            **/.phpunit.cache/**
+            **/storage/logs/**
+            !**/.env.example
+
+      # Optionnel : si votre offre Hostinger inclut SSH (hPanel → Avancé → SSH)
+      - name: Post-deploy Artisan (SSH optionnel Hostinger)
+        if: ${{ secrets.SSH_HOST != '' && secrets.SSH_PASSWORD != '' }}
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.SSH_PORT || 22 }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT || 65002 }}
           script_stop: true
           script: |
             set -e
-            cd "${{ secrets.DEPLOY_PATH }}"
-
-            git fetch origin main
-            git reset --hard origin/main
-
-            composer install --no-dev --optimize-autoloader --no-interaction
-
-            if [ -f package.json ]; then
-              npm ci
-              npm run build
-            fi
-
+            cd "${{ secrets.SSH_DEPLOY_PATH }}"
             php artisan migrate --force
             php artisan storage:link 2>/dev/null || true
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
             php artisan optimize
-
-            php artisan queue:restart 2>/dev/null || true

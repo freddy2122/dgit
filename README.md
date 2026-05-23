@@ -5,13 +5,15 @@ Clone Laravel 10 + Tailwind du portail DGT (Sede Electrónica, miDGT, permis num
 
 ---
 
-## Déploiement (GitHub Actions)
+## Déploiement (GitHub Actions + Hostinger)
 
-Push sur `main` → tests automatiques puis déploiement SSH sur votre serveur.
+Push sur `main` → tests → envoi **FTP/FTPS** vers votre sous-domaine Hostinger.
 
-Guide complet : [docs/DEPLOY-GITHUB-ACTIONS.md](docs/DEPLOY-GITHUB-ACTIONS.md)
+Guide pas à pas : **[docs/DEPLOY-HOSTINGER.md](docs/DEPLOY-HOSTINGER.md)**
 
-Secrets à configurer sur GitHub : `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `DEPLOY_PATH` (et optionnellement `SSH_PORT`).
+Secrets GitHub : `FTP_HOST`, `FTP_USERNAME`, `FTP_PASSWORD`, `FTP_REMOTE_DIR` (ex. `/domains/midgt.votredomaine.com`).
+
+Dans hPanel, définir la **racine web** du sous-domaine sur le dossier `public` du projet.
 
 ---
 
