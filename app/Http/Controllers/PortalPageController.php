@@ -10,6 +10,7 @@ use App\Services\PortalNotificationService;
 use App\Services\UserDocumentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class PortalPageController extends Controller
@@ -133,6 +134,28 @@ class PortalPageController extends Controller
         return redirect()
             ->to($target)
             ->with('portal_success', __('portal.profile.documents_saved'));
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $user = $this->portalUser();
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        if (! Hash::check($validated['current_password'], (string) $user->password)) {
+            return back()->withErrors([
+                'current_password' => __('portal.profile.current_password_invalid'),
+            ]);
+        }
+
+        $user->forceFill([
+            'password' => $validated['password'],
+        ])->save();
+
+        return back()->with('portal_success', __('portal.profile.password_updated'));
     }
 
     public function notifications(): View

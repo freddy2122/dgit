@@ -105,6 +105,7 @@ Route::prefix('{locale}')
             Route::get('/dashboard/notificaciones', [PortalPageController::class, 'notifications'])->name('portal.notifications');
             Route::get('/dashboard/profil', [PortalPageController::class, 'profile'])->name('portal.profile');
             Route::post('/dashboard/profil/documents', [PortalPageController::class, 'storeDocuments'])->name('portal.profile.documents');
+            Route::post('/dashboard/profil/password', [PortalPageController::class, 'updatePassword'])->name('portal.profile.password');
             Route::get('/portal/id-photo', [PortalPhotoController::class, 'show'])->name('portal.id-photo');
             Route::get('/portal/signature', [PortalPhotoController::class, 'signature'])->name('portal.signature');
             Route::get('/portal/document/{type}', [PortalPhotoController::class, 'document'])

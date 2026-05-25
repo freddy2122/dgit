@@ -293,6 +293,14 @@ return [
         'documents_saved' => 'Sus documentos se han guardado.',
         'documents_none_selected' => 'Elija al menos un archivo.',
         'view_pdf' => 'Abrir PDF',
+        'password_title' => 'Cambiar mi contraseña',
+        'password_subtitle' => 'Proteja su acceso al portal eligiendo una nueva contraseña.',
+        'current_password' => 'Contraseña actual',
+        'current_password_invalid' => 'La contraseña actual es incorrecta.',
+        'new_password' => 'Nueva contraseña',
+        'new_password_confirmation' => 'Confirmar la nueva contraseña',
+        'password_submit' => 'Actualizar mi contraseña',
+        'password_updated' => 'Su contraseña ha sido actualizada.',
     ],
 
     'payments' => [

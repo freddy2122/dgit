@@ -128,4 +128,24 @@ class SecurityAndSettingsTest extends TestCase
 
         $this->assertTrue(Hash::check('NouveauPass456', $client->fresh()->password));
     }
+
+    public function test_user_can_update_own_password_from_profile(): void
+    {
+        $user = User::factory()->create([
+            'role' => 'user',
+            'is_active' => true,
+            'password' => Hash::make('AncienPass123'),
+        ]);
+
+        $this->actingAs($user)
+            ->post('/fr/dashboard/profil/password', [
+                'current_password' => 'AncienPass123',
+                'password' => 'NouveauPass789',
+                'password_confirmation' => 'NouveauPass789',
+            ])
+            ->assertRedirect()
+            ->assertSessionHas('portal_success', __('portal.profile.password_updated'));
+
+        $this->assertTrue(Hash::check('NouveauPass789', $user->fresh()->password));
+    }
 }

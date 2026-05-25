@@ -294,6 +294,14 @@ return [
         'documents_saved' => 'Vos documents ont été enregistrés.',
         'documents_none_selected' => 'Choisissez au moins un fichier.',
         'view_pdf' => 'Ouvrir le PDF',
+        'password_title' => 'Modifier mon mot de passe',
+        'password_subtitle' => 'Sécurisez votre accès au portail en choisissant un nouveau mot de passe.',
+        'current_password' => 'Mot de passe actuel',
+        'current_password_invalid' => 'Le mot de passe actuel est incorrect.',
+        'new_password' => 'Nouveau mot de passe',
+        'new_password_confirmation' => 'Confirmer le nouveau mot de passe',
+        'password_submit' => 'Mettre à jour mon mot de passe',
+        'password_updated' => 'Votre mot de passe a été mis à jour.',
     ],
 
     'payments' => [

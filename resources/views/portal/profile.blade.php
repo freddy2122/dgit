@@ -50,6 +50,35 @@
         <p class="border-t border-gray-100 bg-slate-50/80 px-5 py-3 text-xs text-gray-500">{{ __('portal.profile.edit_hint') }}</p>
     </section>
 
+    <section class="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div class="border-b border-gray-100 px-5 py-4">
+            <h2 class="font-bold text-gray-900">{{ __('portal.profile.password_title') }}</h2>
+            <p class="mt-1 text-sm text-gray-600">{{ __('portal.profile.password_subtitle') }}</p>
+        </div>
+        <form method="post" action="{{ portal_route('portal.profile.password') }}" class="space-y-4 px-5 py-5">
+            @csrf
+            <div>
+                <label for="current_password" class="block text-sm font-medium text-gray-700">{{ __('portal.profile.current_password') }}</label>
+                <input id="current_password" type="password" name="current_password" required autocomplete="current-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
+                @error('current_password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700">{{ __('portal.profile.new_password') }}</label>
+                    <input id="password" type="password" name="password" required minlength="8" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
+                    @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">{{ __('portal.profile.new_password_confirmation') }}</label>
+                    <input id="password_confirmation" type="password" name="password_confirmation" required minlength="8" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
+                </div>
+            </div>
+            <button type="submit" class="rounded-lg bg-[#004481] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#003366]">
+                {{ __('portal.profile.password_submit') }}
+            </button>
+        </form>
+    </section>
+
     @include('portal.partials.profile-documents', ['user' => $user])
 @endsection
 
