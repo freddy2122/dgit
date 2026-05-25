@@ -162,6 +162,21 @@ class AdminUserController extends Controller
         return back()->with('status', __('admin.code_regenerated'));
     }
 
+    public function updatePassword(Request $request, User $user): RedirectResponse
+    {
+        abort_unless($user->role === 'user', 404);
+
+        $validated = $request->validate([
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $user->forceFill([
+            'password' => $validated['password'],
+        ])->save();
+
+        return back()->with('status', __('admin.password_updated'));
+    }
+
     public function storeVehicle(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([

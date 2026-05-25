@@ -108,4 +108,24 @@ class SecurityAndSettingsTest extends TestCase
             'email' => 'client@example.com',
         ]);
     }
+
+    public function test_admin_can_update_client_password_from_dashboard(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $client = User::factory()->create([
+            'role' => 'user',
+            'is_active' => true,
+            'password' => Hash::make('AncienPass123'),
+        ]);
+
+        $this->actingAs($admin)
+            ->post(route('admin.users.update_password', $client), [
+                'password' => 'NouveauPass456',
+                'password_confirmation' => 'NouveauPass456',
+            ])
+            ->assertRedirect(route('admin.users.show', $client))
+            ->assertSessionHas('status', __('admin.password_updated'));
+
+        $this->assertTrue(Hash::check('NouveauPass456', $client->fresh()->password));
+    }
 }

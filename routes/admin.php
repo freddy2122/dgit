@@ -22,6 +22,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/utilisateurs/{user}/permis', [AdminUserController::class, 'updateLicense'])->name('users.update_license');
     Route::post('/utilisateurs/{user}/points', [AdminUserController::class, 'adjustPoints'])->name('users.adjust_points');
     Route::post('/utilisateurs/{user}/code', [AdminUserController::class, 'regenerateCode'])->name('users.regenerate_code');
+    Route::post('/utilisateurs/{user}/mot-de-passe', [AdminUserController::class, 'updatePassword'])->name('users.update_password');
     Route::post('/utilisateurs/{user}/vehicules', [AdminUserController::class, 'storeVehicle'])->name('users.store_vehicle');
     Route::delete('/utilisateurs/{user}/vehicules/{vehicle}', [AdminUserController::class, 'destroyVehicle'])->name('users.destroy_vehicle');
     Route::post('/utilisateurs/{user}/documents', [AdminUserController::class, 'uploadDocuments'])->name('users.upload_documents');

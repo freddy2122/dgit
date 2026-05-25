@@ -168,6 +168,24 @@
         </div>
 
         <div class="rounded-xl border bg-white p-5 shadow-sm">
+            <h3 class="font-bold text-gray-900">{{ __('admin.change_password_title') }}</h3>
+            <p class="mt-1 text-sm text-gray-500">{{ __('admin.change_password_hint') }}</p>
+            <form method="post" action="{{ route('admin.users.update_password', $user) }}" class="mt-4 space-y-4">
+                @csrf
+                <div>
+                    <label for="admin-password" class="text-xs font-semibold text-gray-500">{{ __('admin.new_password') }}</label>
+                    <input id="admin-password" type="password" name="password" required minlength="8" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                    @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <label for="admin-password-confirmation" class="text-xs font-semibold text-gray-500">{{ __('admin.new_password_confirmation') }}</label>
+                    <input id="admin-password-confirmation" type="password" name="password_confirmation" required minlength="8" autocomplete="new-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+                </div>
+                <button type="submit" class="w-full rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">{{ __('admin.change_password_submit') }}</button>
+            </form>
+        </div>
+
+        <div class="rounded-xl border bg-white p-5 shadow-sm">
             <h3 class="font-bold text-gray-900">{{ __('admin.recent_notifications') }}</h3>
             <ul class="mt-3 space-y-2 text-sm">
                 @forelse ($user->portalNotifications as $n)
