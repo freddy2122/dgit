@@ -109,7 +109,7 @@ return [
     ],
     [
         'label' => 'Muévete con seguridad',
-        'label_fr' => 'Déplacez-vous avec confiance',
+        'label_fr' => 'Déplacez-vous ',
         'url' => 'muevete-con-seguridad',
         'children' => [
             ['label' => 'Vías más seguras', 'label_fr' => 'Routes plus sûres', 'url' => 'muevete-con-seguridad/vias-mas-seguras'],

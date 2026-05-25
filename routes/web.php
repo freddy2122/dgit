@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClaveAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentVerifyController;
+use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LicenceDigitalController;
 use App\Http\Controllers\LicenceQrController;
@@ -142,6 +143,14 @@ Route::prefix('{locale}')
         Route::middleware('guest')->group(function () {
             Route::get('/login', [SessionLoginController::class, 'create'])->name('login');
             Route::post('/login', [SessionLoginController::class, 'store'])->middleware('throttle:login');
+            Route::get('/password/forgot', [ForgotPasswordController::class, 'create'])->name('password.forgot');
+            Route::post('/password/forgot', [ForgotPasswordController::class, 'sendCode'])
+                ->middleware('throttle:6,1')
+                ->name('password.forgot.send');
+            Route::get('/password/reset', [ForgotPasswordController::class, 'showReset'])->name('password.reset.form');
+            Route::post('/password/reset', [ForgotPasswordController::class, 'reset'])
+                ->middleware('throttle:10,1')
+                ->name('password.reset');
         });
 
         Route::post('/logout', [SessionLoginController::class, 'destroy'])->middleware('auth')->name('logout');

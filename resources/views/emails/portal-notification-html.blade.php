@@ -10,13 +10,6 @@
     <p><strong>{{ $title }}</strong></p>
     <p style="white-space: pre-wrap;">{{ $body }}</p>
     <p><a href="{{ $dashboardUrl }}" style="color: #004481;">{{ $dashboardUrl }}</a></p>
-    @if (! empty($whatsappReplyUrl))
-        <p style="margin-top: 24px;">
-            <a href="{{ $whatsappReplyUrl }}" style="display: inline-block; background: #25D366; color: #fff; text-decoration: none; font-weight: 600; padding: 12px 20px; border-radius: 8px;">
-                {{ __('portal.whatsapp.email_button') }}
-            </a>
-        </p>
-    @endif
     <p style="margin-top: 32px; font-size: 12px; color: #6b7280;">— Portail permis de conduire</p>
 </body>
 </html>

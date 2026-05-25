@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use App\Mail\PasswordResetCodeMail;
 use App\Models\PortalSetting;
 use App\Models\User;
 use App\Services\PortalSettingsService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class SecurityAndSettingsTest extends TestCase
@@ -62,5 +64,48 @@ class SecurityAndSettingsTest extends TestCase
 
         $this->assertSame('34612345678', app(PortalSettingsService::class)->whatsappNumber());
         $this->assertSame('34612345678', PortalSetting::getValue('gestoria_whatsapp'));
+    }
+
+    public function test_user_can_reset_password_with_email_code(): void
+    {
+        Mail::fake();
+
+        $user = User::factory()->create([
+            'email' => 'client@example.com',
+            'is_active' => true,
+            'password' => Hash::make('AncienPass123'),
+        ]);
+
+        $this->post('/fr/password/forgot', [
+            'email' => 'client@example.com',
+        ])->assertRedirect('/fr/password/reset?email=client%40example.com')
+            ->assertSessionHas('status', __('auth.reset_code_sent'));
+
+        $this->assertDatabaseHas('password_reset_tokens', [
+            'email' => 'client@example.com',
+        ]);
+
+        $plainCode = null;
+
+        Mail::assertSent(PasswordResetCodeMail::class, function (PasswordResetCodeMail $mail) use (&$plainCode, $user) {
+            $plainCode = $mail->plainCode;
+
+            return $mail->hasTo($user->email);
+        });
+
+        $this->assertNotNull($plainCode);
+
+        $this->post('/fr/password/reset', [
+            'email' => 'client@example.com',
+            'code' => $plainCode,
+            'password' => 'NouveauPass123',
+            'password_confirmation' => 'NouveauPass123',
+        ])->assertRedirect('/fr/login')
+            ->assertSessionHas('status', __('auth.reset_success'));
+
+        $this->assertTrue(Hash::check('NouveauPass123', $user->fresh()->password));
+        $this->assertDatabaseMissing('password_reset_tokens', [
+            'email' => 'client@example.com',
+        ]);
     }
 }

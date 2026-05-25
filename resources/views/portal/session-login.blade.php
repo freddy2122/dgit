@@ -37,6 +37,9 @@
                     <label for="password" class="block text-sm font-medium text-gray-700">{{ __('auth.password') }}</label>
                     <input type="password" name="password" id="password" required autocomplete="current-password" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-[#004481] focus:outline-none focus:ring-1 focus:ring-[#004481]" />
                     @error('password')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                    <div class="mt-2 text-right">
+                        <a href="{{ portal_route('password.forgot') }}" class="text-sm font-medium text-[#004481] hover:underline">{{ __('auth.forgot_password') }}</a>
+                    </div>
                 </div>
             </div>
             <button type="submit" class="mt-6 w-full rounded-lg bg-[#004481] py-2.5 text-sm font-semibold text-white hover:bg-[#003366]">

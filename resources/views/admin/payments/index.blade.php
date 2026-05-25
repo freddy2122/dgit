@@ -88,19 +88,13 @@
 <td class="px-5 py-3">{{ payment_status_label($p->status) }}</td>
 <td class="px-5 py-3 text-right">
     @if ($p->isPending())
-    <form class="inline-flex items-center gap-2" method="post" action="{{ route('admin.payments.confirm', $p) }}">@csrf
+    <form class="inline" method="post" action="{{ route('admin.payments.confirm', $p) }}">
+        @csrf
         <button type="submit" class="text-xs font-semibold text-emerald-700 hover:underline">{{ __('admin.confirm_whatsapp_payment') }}</button>
-        @if ($p->user)
-        @include('admin.partials.whatsapp-send', [
-            'user' => $p->user,
-            'titleKey' => 'admin.notif_tax_paid_title',
-            'bodyKey' => 'admin.notif_tax_paid_body',
-            'params' => ['label' => $p->label, 'ref' => $p->reference],
-            'size' => 'sm',
-        ])
-        @endif
     </form>
-    <form class="inline ml-2" method="post" action="{{ route('admin.payments.destroy', $p) }}" onsubmit="return confirm(@json(__('admin.tax_delete_confirm')))">@csrf @method('DELETE')
+    <form class="inline ml-2" method="post" action="{{ route('admin.payments.destroy', $p) }}" onsubmit="return confirm({{ Illuminate\Support\Js::from(__('admin.tax_delete_confirm')) }})">
+        @csrf
+        @method('DELETE')
         <button type="submit" class="text-xs text-red-700 hover:underline">{{ __('admin.delete') }}</button>
     </form>
     @endif

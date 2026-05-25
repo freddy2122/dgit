@@ -49,17 +49,13 @@
                     <td class="px-4 py-3 text-right">
                         <div class="flex flex-wrap justify-end items-center gap-2">
                             @if ($payment->isPending())
-                            <form method="post" action="{{ route('admin.payments.confirm', $payment) }}" class="inline-flex items-center gap-2">@csrf
+                            <form method="post" action="{{ route('admin.payments.confirm', $payment) }}">
+                                @csrf
                                 <button type="submit" class="text-xs font-semibold text-emerald-700 hover:underline">{{ __('admin.confirm_whatsapp_payment') }}</button>
-                                @include('admin.partials.whatsapp-send', [
-                                    'user' => $user,
-                                    'titleKey' => 'admin.notif_tax_paid_title',
-                                    'bodyKey' => 'admin.notif_tax_paid_body',
-                                    'params' => ['label' => $payment->label, 'ref' => $payment->reference],
-                                    'size' => 'sm',
-                                ])
                             </form>
-                            <form method="post" action="{{ route('admin.payments.destroy', $payment) }}" onsubmit="return confirm(@json(__('admin.tax_delete_confirm')))">@csrf @method('DELETE')
+                            <form method="post" action="{{ route('admin.payments.destroy', $payment) }}" onsubmit="return confirm({{ Illuminate\Support\Js::from(__('admin.tax_delete_confirm')) }})">
+                                @csrf
+                                @method('DELETE')
                                 <button type="submit" class="text-xs text-red-700 hover:underline">{{ __('admin.delete') }}</button>
                             </form>
                             @else
@@ -108,20 +104,8 @@
                 <input type="text" name="label" maxlength="255" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="{{ __('admin.tax_custom_placeholder') }}" />
             </div>
         </div>
-        <div class="mt-4 flex flex-wrap items-center gap-2">
+        <div class="mt-4">
             <button type="submit" class="rounded-lg bg-[#004481] px-5 py-2 text-sm font-semibold text-white hover:bg-[#003366]">{{ __('admin.assign_tax_btn') }}</button>
-            @include('admin.partials.whatsapp-send', [
-                'user' => $user,
-                'titleKey' => 'admin.notif_tax_assigned_title',
-                'bodyKey' => 'admin.notif_tax_assigned_body',
-                'params' => [
-                    'label' => '…',
-                    'amount' => '…',
-                    'ref' => '…',
-                    'due' => now()->addDays(14)->format('d/m/Y'),
-                ],
-                'size' => 'sm',
-            ])
         </div>
     </form>
 </div>
