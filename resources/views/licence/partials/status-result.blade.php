@@ -1,6 +1,10 @@
+@php
+    $legacyResult = $result ?? null;
+@endphp
+
 @include('licence.partials.status-result-rich', [
-    'user' => $user ?? $result?->user ?? null,
-    'application' => $application ?? $result ?? null,
+    'user' => $user ?? $legacyResult?->user ?? null,
+    'application' => $application ?? $legacyResult ?? null,
     'payload' => $payload ?? [],
     'photoSrc' => $photoSrc ?? null,
 ])

@@ -1,8 +1,9 @@
 @php
-    $found = $payload['found'] ?? (bool) ($user ?? $result?->user);
-    $profileUser = $user ?? $result?->user;
+    $legacyResult = $result ?? null;
+    $profileUser = $user ?? $legacyResult?->user;
+    $found = $payload['found'] ?? (bool) $profileUser;
     $license = $profileUser?->licenseSummary;
-    $application = $application ?? $result;
+    $application = $application ?? $legacyResult;
 @endphp
 
 @if (! $found || ! $profileUser)
