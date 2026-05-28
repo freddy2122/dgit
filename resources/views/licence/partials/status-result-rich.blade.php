@@ -22,12 +22,21 @@
         </p>
     @endif
 
-    @include('licence.partials.status-result-midgt', [
-        'user' => $profileUser,
-        'profileUser' => $profileUser,
-        'license' => $license,
-        'application' => $application,
-        'payload' => $payload,
-        'photoSrc' => $photoSrc ?? null,
-    ])
+    <div class="flex justify-center py-2">
+        @include('licence.partials.status-result-midgt', [
+            'user' => $profileUser,
+            'profileUser' => $profileUser,
+            'license' => $license,
+            'application' => $application,
+            'payload' => $payload,
+            'photoSrc' => $photoSrc ?? null,
+        ])
+    </div>
+
+    @if (! empty($payload['exam']['show']))
+        @include('licence.partials.status-exam-result-sede', [
+            'payload' => $payload,
+            'exam' => $payload['exam'],
+        ])
+    @endif
 @endif

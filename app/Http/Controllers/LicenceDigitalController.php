@@ -14,6 +14,8 @@ class LicenceDigitalController extends Controller
 
     public function show(): View
     {
+        abort_unless(auth()->user()?->isAdmin(), 403);
+
         $user = auth()->user();
         $this->portal->ensureProvisioned($user);
 

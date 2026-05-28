@@ -19,6 +19,8 @@ class LicenceQrController extends Controller
 
     public function show(): View
     {
+        abort_unless(auth()->user()?->isAdmin(), 403);
+
         $user = auth()->user();
         $this->portal->ensureProvisioned($user);
 
@@ -32,6 +34,8 @@ class LicenceQrController extends Controller
 
     public function generate(Request $request): JsonResponse
     {
+        abort_unless(auth()->user()?->isAdmin(), 403);
+
         $user = auth()->user();
         $this->portal->ensureProvisioned($user);
 

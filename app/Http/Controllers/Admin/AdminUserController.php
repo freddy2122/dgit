@@ -109,6 +109,17 @@ class AdminUserController extends Controller
         return view('admin.users.show', ['user' => $user]);
     }
 
+    public function licenseDigital(User $user): View
+    {
+        PortalUserDataProvisioner::ensureProfile($user);
+        $user->load('licenseSummary');
+
+        return view('admin.users.license-digital', [
+            'user' => $user,
+            'license' => $user->licenseSummary,
+        ]);
+    }
+
     public function updateLicense(Request $request, User $user): RedirectResponse
     {
         $validated = $request->validate([

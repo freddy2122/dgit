@@ -17,7 +17,12 @@
 <div class="grid gap-6 xl:grid-cols-3">
     <section class="xl:col-span-2 space-y-6">
         <div class="rounded-xl border bg-white p-6 shadow-sm">
-            <h2 class="text-lg font-bold text-gray-900">{{ __('admin.client_permit') }}</h2>
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <h2 class="text-lg font-bold text-gray-900">{{ __('admin.client_permit') }}</h2>
+                <a href="{{ route('admin.users.license_digital', $user) }}" class="rounded-lg border border-[#004481] px-4 py-2 text-sm font-semibold text-[#004481] hover:bg-sky-50">
+                    {{ __('admin.view_license_digital') }}
+                </a>
+            </div>
             @php
                 $lic = $user->licenseSummary;
                 $activeCategories = collect($lic?->categories_data ?? [])

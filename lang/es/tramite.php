@@ -50,4 +50,6 @@ return [
     'notif_shipped_body' => 'Expediente :ref — envío postal en curso.',
     'notif_valid_title' => 'Expediente validado',
     'notif_valid_body' => 'Referencia :ref — trámite finalizado.',
+    'notif_score_ok_title' => 'Resultado del examen disponible',
+    'notif_score_ok_body' => 'Su nota de examen (:score/100) está registrada. Consulte el detalle en su espacio.',
 ];

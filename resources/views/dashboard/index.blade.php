@@ -27,9 +27,9 @@
         <section class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
             <div class="flex items-center justify-between border-b border-gray-100 bg-slate-50/80 px-5 py-4">
                 <h2 class="text-base font-bold text-gray-900">{{ __('portal.dashboard.licenses') }}</h2>
+                {{-- Permis recto/verso : consultation réservée à l’admin (fiche client) --}}
                 <div class="flex flex-wrap items-center gap-3">
-                    <a href="{{ portal_route('licence.digital') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('portal.see_all') }}</a>
-                    <a href="{{ portal_route('licence.qr') }}" class="text-sm font-semibold text-emerald-700 hover:underline">{{ __('portal.qr.generate_btn') }}</a>
+                    <a href="{{ route('licence.points') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('portal.license.points_detail') }}</a>
                 </div>
             </div>
             <div class="flex flex-col gap-5 p-5 sm:flex-row sm:items-center">
@@ -37,18 +37,29 @@
                     <p class="text-xs font-medium uppercase tracking-wide text-gray-500">{{ __('portal.dashboard.license_type') }}</p>
                     <p class="mt-1 font-mono text-sm font-bold text-gray-900">{{ strtoupper(preg_replace('/\s+/', '', $nie ?? '')) ?: '—' }}</p>
                     @if ($hasLicenseData ?? false)
-                    <a href="{{ portal_route('licence.digital') }}" class="mt-4 inline-block">
-                        @include('portal.partials.license-card-maquette', [
-                            'user' => auth()->user(),
-                            'license' => $license,
-                            'size' => 'dashboard',
-                            'class' => 'mx-0',
-                        ])
+                    <dl class="mt-4 space-y-2 rounded-lg border border-gray-100 bg-slate-50/80 p-4 text-sm">
+                        @if ($license?->category)
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-gray-500">{{ __('portal.dashboard.license_category') }}</dt>
+                            <dd class="font-semibold text-gray-900">{{ $license->category }}</dd>
+                        </div>
+                        @endif
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-gray-500">{{ __('portal.valid_until') }}</dt>
+                            <dd class="font-semibold text-gray-900">{{ $license?->valid_until?->format('d-m-Y') ?? '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between gap-4">
+                            <dt class="text-gray-500">{{ __('portal.dashboard.license_status') }}</dt>
+                            <dd class="font-semibold text-[#004481]">{{ permit_status_label($license?->application_status) }}</dd>
+                        </div>
+                    </dl>
+                    {{-- Bouton permis numérique désactivé côté client — voir admin/users/{id}/permis-digital --}}
+                    {{--
+                    <a href="{{ portal_route('licence.digital') }}" class="mt-4 inline-flex min-h-[44px] items-center justify-center rounded-lg bg-[#004481] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#003366]">
+                        {{ __('portal.dashboard.view_digital_license') }}
                     </a>
-                    <p class="mt-3 text-sm text-gray-600">
-                        {{ __('portal.valid_until') }}
-                        <span class="font-semibold text-gray-900">{{ $license?->valid_until?->format('d-m-Y') ?? '—' }}</span>
-                    </p>
+                    <p class="mt-2 text-xs text-gray-500">{{ __('portal.dashboard.license_card_hint') }}</p>
+                    --}}
                     @else
                     <p class="mt-4 rounded-lg border border-dashed border-gray-200 bg-slate-50 p-6 text-sm text-gray-600">{{ __('portal.dashboard.no_license_yet') }}</p>
                     @if ($application)

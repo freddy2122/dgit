@@ -13,10 +13,23 @@
         <p class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">{{ session('status') }}</p>
     @endif
 
-    <section class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
-        <p class="text-sm font-semibold text-emerald-900">{{ __('tramite.exam_prevalidated_title') }}</p>
-        <p class="mt-1 text-sm text-emerald-800">{{ __('tramite.exam_prevalidated_hint') }}</p>
-    </section>
+    @if (! empty($exam['show']))
+        <div class="mb-6 flex flex-col items-center gap-6">
+            @include('licence.partials.status-result-midgt', [
+                'user' => $profileUser,
+                'profileUser' => $profileUser,
+                'license' => $license,
+                'application' => $application,
+                'payload' => $tramitePayload,
+            ])
+            @include('licence.partials.status-exam-result-sede', ['exam' => $exam, 'payload' => $tramitePayload])
+        </div>
+    @elseif ($application->examPrevalidated())
+        <section class="mb-6 rounded-xl border border-emerald-200 bg-emerald-50 p-5">
+            <p class="text-sm font-semibold text-emerald-900">{{ __('tramite.exam_prevalidated_title') }}</p>
+            <p class="mt-1 text-sm text-emerald-800">{{ __('tramite.exam_prevalidated_hint') }}</p>
+        </section>
+    @endif
 
     <section class="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 class="text-sm font-bold uppercase tracking-wide text-gray-500">{{ __('tramite.workflow_title') }}</h2>

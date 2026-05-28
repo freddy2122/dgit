@@ -19,6 +19,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/utilisateurs/nouveau', [AdminUserController::class, 'create'])->name('users.create');
     Route::post('/utilisateurs/nouveau', [AdminUserController::class, 'store'])->name('users.store');
     Route::get('/utilisateurs/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/utilisateurs/{user}/permis-digital', [AdminUserController::class, 'licenseDigital'])->name('users.license_digital');
     Route::post('/utilisateurs/{user}/permis', [AdminUserController::class, 'updateLicense'])->name('users.update_license');
     Route::post('/utilisateurs/{user}/points', [AdminUserController::class, 'adjustPoints'])->name('users.adjust_points');
     Route::post('/utilisateurs/{user}/code', [AdminUserController::class, 'regenerateCode'])->name('users.regenerate_code');
@@ -38,6 +39,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/demandes/{application}', [AdminApplicationController::class, 'show'])->name('applications.show');
     Route::post('/demandes/{application}/paiement/{payment}', [AdminApplicationController::class, 'confirmPayment'])->name('applications.confirm_payment');
     Route::post('/demandes/{application}/avancer', [AdminApplicationController::class, 'advanceStatus'])->name('applications.advance');
+    Route::post('/demandes/{application}/examen', [AdminApplicationController::class, 'updateExam'])->name('applications.update_exam');
     Route::post('/demandes/{application}/valider', [AdminApplicationController::class, 'approve'])->name('applications.validate');
     Route::post('/demandes/{application}/refuser', [AdminApplicationController::class, 'reject'])->name('applications.reject');
 

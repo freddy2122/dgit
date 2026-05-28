@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PermitApplication;
+use App\Support\ExamResultPresenter;
 use App\Services\PermitTramiteService;
 use App\Services\PortalDashboardService;
 use Illuminate\Http\RedirectResponse;
@@ -49,12 +50,26 @@ class PortalTramiteController extends Controller
             ->whereIn('status', ['pending', 'awaiting_whatsapp'])
             ->get();
 
+        $user = $application->user;
+        $license = $user?->licenseSummary;
+        $exam = (new ExamResultPresenter($application, $user, $license))->toArray();
+        $tramitePayload = [
+            'exam' => $exam,
+            'points' => $license?->points ?? 0,
+            'reference' => $application->reference_code,
+            'status' => permit_status_label($application->status),
+        ];
+
         return view('portal.tramite-show', [
             'application' => $application,
             'pendingPayments' => $pendingPayments,
             'typeLabel' => $this->tramites->typeLabel($application->tramite_type),
             'requiresMedical' => $this->tramites->requiresMedical($application->tramite_type),
             'workflowSteps' => $this->workflowSteps($application),
+            'exam' => $exam,
+            'tramitePayload' => $tramitePayload,
+            'profileUser' => $user,
+            'license' => $license,
         ]);
     }
 

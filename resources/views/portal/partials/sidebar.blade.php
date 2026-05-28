@@ -2,8 +2,6 @@
     $active = $portalNavActive ?? 'dashboard';
     $portalNav = [
         ['id' => 'dashboard', 'label' => __('portal.nav.dashboard'), 'href' => portal_route('dashboard'), 'icon' => 'home'],
-        ['id' => 'digital', 'label' => __('portal.nav.digital'), 'href' => portal_route('licence.digital'), 'icon' => 'card'],
-        ['id' => 'qr', 'label' => __('portal.qr.generate_btn'), 'href' => portal_route('licence.qr'), 'icon' => 'card'],
         ['id' => 'points', 'label' => __('portal.nav.points'), 'href' => portal_route('licence.points'), 'icon' => 'card'],
         ['id' => 'demarches', 'label' => __('portal.nav.demarches'), 'href' => portal_route('portal.demarches'), 'icon' => 'doc'],
         ['id' => 'vehicles', 'label' => __('portal.nav.vehicles'), 'href' => portal_route('vehicles.report'), 'icon' => 'car'],

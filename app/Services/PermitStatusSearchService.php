@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\LicenseSummary;
 use App\Models\PermitApplication;
 use App\Models\User;
+use App\Support\ExamResultPresenter;
 use App\Support\VerificationCode;
 use Carbon\Carbon;
 
@@ -113,6 +114,7 @@ class PermitStatusSearchService
         $tramiteService = app(PermitTramiteService::class);
         $tramiteType = $application?->tramite_type;
         $typeLabel = $tramiteType ? $tramiteService->typeLabel($tramiteType) : null;
+        $exam = (new ExamResultPresenter($application, $user, $license))->toArray();
 
         return [
             'found' => true,
@@ -124,6 +126,7 @@ class PermitStatusSearchService
             'exam_score' => $application?->exam_score,
             'min_pass_score' => $application?->min_pass_score ?? $tramiteService->minPassScore(),
             'exam_passed' => $application ? $application->examPassed() : true,
+            'exam' => $exam,
             'application_id' => $application?->id,
             'nie' => $application?->nie ?? strtoupper((string) $user->nie),
             'filed_on' => $application?->submitted_at?->format('d/m/Y') ?? $application?->created_at?->format('d/m/Y') ?? $user->created_at?->format('d/m/Y'),

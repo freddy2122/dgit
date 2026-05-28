@@ -15,6 +15,7 @@ class PermitApplication extends Model
         'reference_code',
         'tramite_type',
         'exam_score',
+        'exam_errors',
         'min_pass_score',
         'score_improvement_paid',
         'submitted_at',

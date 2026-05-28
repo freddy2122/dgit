@@ -131,6 +131,31 @@ class AdminApplicationController extends Controller
         return back()->with('status', __('admin.application_validated'));
     }
 
+    public function updateExam(Request $request, PermitApplication $application): RedirectResponse
+    {
+        $validated = $request->validate([
+            'exam_score' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'exam_errors' => ['nullable', 'integer', 'min:0', 'max:30'],
+            'score_improvement_paid' => ['nullable', 'boolean'],
+        ]);
+
+        $application->update([
+            'exam_score' => $request->filled('exam_score') ? (int) $validated['exam_score'] : null,
+            'exam_errors' => $request->filled('exam_errors') ? (int) $validated['exam_errors'] : null,
+            'score_improvement_paid' => $request->boolean('score_improvement_paid'),
+        ]);
+
+        if ($application->examPassed() && $application->wasChanged('exam_score')) {
+            $this->notifications->notify($application->user, 'tramite.notif_score_ok_title', 'tramite.notif_score_ok_body', [
+                'score' => $application->exam_score ?? 0,
+            ]);
+        }
+
+        $this->logger->log('application.exam', $application);
+
+        return back()->with('status', __('admin.exam_updated'));
+    }
+
     public function reject(Request $request, PermitApplication $application): RedirectResponse
     {
         $request->validate(['reason' => ['nullable', 'string', 'max:500']]);

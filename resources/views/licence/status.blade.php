@@ -146,7 +146,7 @@
                         <div class="bg-[#004481] px-4 py-2 text-sm font-semibold text-white">
                             {{ __('status.result_title') }}
                         </div>
-                        <div class="border border-t-0 border-gray-300 bg-[#eceff2] p-4 sm:p-6">
+                        <div class="border border-t-0 border-gray-300 bg-[#eceff2] p-3 sm:p-4">
                             @if ($searched)
                                 @include('licence.partials.status-result-rich', [
                                     'user' => $user ?? null,

@@ -53,8 +53,8 @@
         <a href="{{ portal_route('dashboard') }}" class="rounded-xl border border-gray-200 bg-white p-4 text-sm font-semibold text-[#004481] shadow-sm hover:bg-gray-50">
             {{ __('portal.vehicles.back_dashboard') }}
         </a>
-        <a href="{{ route('licence.digital') }}" class="rounded-xl border border-gray-200 bg-white p-4 text-sm font-semibold text-[#004481] shadow-sm hover:bg-gray-50">
-            {{ __('portal.vehicles.see_license') }}
+        <a href="{{ route('licence.points') }}" class="rounded-xl border border-gray-200 bg-white p-4 text-sm font-semibold text-[#004481] shadow-sm hover:bg-gray-50">
+            {{ __('portal.license.points_detail') }}
         </a>
     </div>
 @endsection

@@ -1,0 +1,525 @@
+/* miDGT + Sede — reproduction fidèle des captures (mobile ~390px) */
+
+.midgt-app {
+    --midgt-teal: #00a9b8;
+    --midgt-blue: #0077b3;
+    --midgt-hero-from: #e4ebf2;
+    --midgt-hero-to: #d2dce6;
+    --midgt-skyline: #b8c5d0;
+    --midgt-tab-muted: #8a96a3;
+    --midgt-vehicle-grey: #e8ecef;
+    --midgt-sede-panel: #d4e4f0;
+    --midgt-sede-border: #b8cfe0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* —— Carte miDGT —— */
+.midgt-app__card {
+    overflow: hidden;
+    border-radius: 0;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.midgt-hero {
+    position: relative;
+    padding: 16px 16px 14px;
+    background: linear-gradient(180deg, var(--midgt-hero-from) 0%, var(--midgt-hero-to) 100%);
+    overflow: hidden;
+}
+
+.midgt-hero__skyline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 52px;
+    pointer-events: none;
+    opacity: 0.55;
+}
+
+.midgt-hero__top {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    z-index: 1;
+}
+
+.midgt-hero__photo {
+    width: 72px;
+    height: 72px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 2px solid rgba(255, 255, 255, 0.9);
+    background: #c5d5e3;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.midgt-hero__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.midgt-hero__identity {
+    flex: 1;
+    min-width: 0;
+    padding-top: 2px;
+    padding-right: 4px;
+}
+
+.midgt-hero__hello {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #1a1a1a;
+    letter-spacing: -0.02em;
+}
+
+.midgt-hero__name {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #2c2c2c;
+    word-break: break-word;
+}
+
+.midgt-points-ring {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 76px;
+    border: 2.5px solid #7eb8dc;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0, 60, 100, 0.1);
+}
+
+.midgt-points-ring__value {
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--midgt-blue);
+    letter-spacing: -0.03em;
+}
+
+.midgt-points-ring__label {
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--midgt-blue);
+}
+
+.midgt-hero__status {
+    position: relative;
+    z-index: 1;
+    margin-top: 12px;
+    padding-left: 0;
+    max-width: 58%;
+}
+
+.midgt-hero__wow {
+    font-size: 15px;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.3;
+}
+
+.midgt-hero__line {
+    margin-top: 2px;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.35;
+    color: #3d3d3d;
+}
+
+.midgt-hero__link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--midgt-teal);
+    text-decoration: none;
+}
+
+.midgt-hero__link:hover {
+    text-decoration: underline;
+}
+
+/* Onglets */
+.midgt-tabs {
+    display: flex;
+    border-bottom: 1px solid #e2e6ea;
+    background: #fff;
+}
+
+.midgt-tabs__btn {
+    flex: 1;
+    padding: 11px 8px 10px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--midgt-tab-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.midgt-tabs__btn.is-active {
+    color: var(--midgt-teal);
+    border-bottom-color: var(--midgt-teal);
+}
+
+.midgt-tabs__btn:not(.is-active):hover {
+    color: #5a6570;
+}
+
+/* Panneaux */
+.midgt-panel {
+    display: none;
+    padding: 16px;
+    background: #fff;
+}
+
+.midgt-panel.is-active {
+    display: block;
+}
+
+/* Carte véhicules (capture) */
+.midgt-vehicle-tile {
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    text-decoration: none;
+    color: inherit;
+}
+
+.midgt-vehicle-tile__visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    background: var(--midgt-vehicle-grey);
+}
+
+.midgt-vehicle-tile__visual svg {
+    width: 120px;
+    height: auto;
+    opacity: 0.95;
+}
+
+.midgt-vehicle-tile__label {
+    padding: 18px 16px 20px;
+    text-align: center;
+    font-size: 17px;
+    font-weight: 400;
+    color: #4a4a4a;
+    letter-spacing: 0.01em;
+}
+
+.midgt-vehicle-tile__plate {
+    display: block;
+    margin-top: 4px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    color: #1a1a1a;
+}
+
+/* Onglet validation */
+.midgt-validation {
+    padding: 8px 4px 12px;
+}
+
+.midgt-validation__bar {
+    height: 10px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: #e8ecef;
+}
+
+.midgt-validation__fill {
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--midgt-teal), #00c4d4);
+    transition: width 0.4s ease;
+}
+
+.midgt-validation__text {
+    margin-top: 12px;
+    font-size: 14px;
+    line-height: 1.45;
+    color: #4a5568;
+}
+
+/* Actualidad DGT */
+.midgt-news {
+    padding: 20px 16px 24px;
+    background: #fff;
+    border-top: 8px solid #f0f2f4;
+}
+
+.midgt-news__title {
+    margin: 0 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--midgt-teal);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #2c3e50;
+}
+
+.midgt-news__scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.midgt-news__scroll::-webkit-scrollbar {
+    height: 0;
+}
+
+.midgt-news__item {
+    flex: 0 0 200px;
+    scroll-snap-align: start;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #f5f7f9;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    text-decoration: none;
+    color: inherit;
+}
+
+.midgt-news__item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    background: #e8ecef;
+}
+
+.midgt-news__caption {
+    padding: 10px 12px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #333;
+}
+
+/* Dossier (repliable discret) */
+.midgt-dossier {
+    border-top: 1px solid #e8ecef;
+    background: #fafbfc;
+}
+
+.midgt-dossier summary {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--midgt-blue);
+    cursor: pointer;
+    list-style: none;
+}
+
+.midgt-dossier summary::-webkit-details-marker {
+    display: none;
+}
+
+.midgt-dossier__body {
+    padding: 0 16px 16px;
+    font-size: 13px;
+}
+
+/* —— Sede RESULTADO NOTAS —— */
+.sede-exam {
+    --sede-navy: #003366;
+    max-width: 420px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    -webkit-font-smoothing: antialiased;
+}
+
+.sede-exam__header {
+    padding: 16px 16px 12px;
+    background: #fff;
+    border-bottom: 1px solid #dde4ea;
+}
+
+.sede-exam__logos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 14px;
+    margin-bottom: 10px;
+}
+
+.sede-exam__logos img {
+    height: 28px;
+    width: auto;
+    max-width: 100px;
+    object-fit: contain;
+}
+
+.sede-exam__gov {
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: #555;
+}
+
+.sede-exam__sede-label {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--sede-navy);
+}
+
+.sede-exam__sede-url {
+    font-size: 12px;
+    color: #5a6a7a;
+}
+
+.sede-exam__title-wrap {
+    padding: 14px 16px;
+    background: #eef4f9;
+    border-bottom: 1px solid var(--midgt-sede-border);
+}
+
+.sede-exam__title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--sede-navy);
+    text-align: center;
+}
+
+.sede-exam__panel {
+    margin: 0;
+    padding: 4px 16px 8px;
+    background: var(--midgt-sede-panel);
+    border-bottom: 1px solid var(--midgt-sede-border);
+}
+
+.sede-exam__row {
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(0, 51, 102, 0.08);
+}
+
+.sede-exam__row:last-child {
+    border-bottom: none;
+}
+
+.sede-exam__label {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--sede-navy);
+}
+
+.sede-exam__value {
+    display: block;
+    margin-top: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.35;
+}
+
+.sede-exam__value--apto {
+    color: #0d7a3e;
+    font-weight: 800;
+    font-size: 15px;
+}
+
+.sede-exam__value--fail {
+    color: #b91c1c;
+    font-weight: 800;
+}
+
+.sede-exam__disclaimer {
+    margin: 0;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-style: italic;
+    color: #4a5568;
+    background: #f7f9fb;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.sede-exam__aviso {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #4a5568;
+    background: #fff;
+}
+
+.sede-exam__aviso strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #333;
+}
+
+.sede-exam__back {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 16px;
+    border: none;
+    background: #3d3d3d;
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.sede-exam__back:hover {
+    background: #2a2a2a;
+}
+
+@media (min-width: 420px) {
+    .midgt-app__card {
+        border-radius: 12px;
+    }
+
+    .midgt-app {
+        max-width: 390px;
+    }
+}
