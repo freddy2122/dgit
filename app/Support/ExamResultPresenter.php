@@ -9,9 +9,6 @@ use Carbon\Carbon;
 
 class ExamResultPresenter
 {
-    /** @var list<string> */
-    private const EXAM_TRAMITE_TYPES = ['obtencion', 'canje'];
-
     public function __construct(
         private ?PermitApplication $application,
         private ?User $user = null,
@@ -31,8 +28,7 @@ class ExamResultPresenter
             return true;
         }
 
-        return $this->application->examPrevalidated()
-            && in_array($this->application->tramite_type, self::EXAM_TRAMITE_TYPES, true);
+        return $this->application->examPrevalidated();
     }
 
     public function passed(): bool
