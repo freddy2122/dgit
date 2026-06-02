@@ -35,6 +35,8 @@
     right: 0;
     bottom: 0;
     height: 52px;
+    width: 100%;
+    object-fit: cover;
     pointer-events: none;
     opacity: 0.55;
 }
@@ -225,6 +227,13 @@
 .midgt-vehicle-tile__visual svg {
     width: 120px;
     height: auto;
+    opacity: 0.95;
+}
+
+.midgt-vehicle-tile__visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     opacity: 0.95;
 }
 

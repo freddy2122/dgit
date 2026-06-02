@@ -22,9 +22,15 @@
     <article class="midgt-app__card">
         {{-- Hero profil + puntos (capture miDGT) --}}
         <section class="midgt-hero" aria-label="miDGT">
-            <svg class="midgt-hero__skyline" viewBox="0 0 400 52" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path fill="var(--midgt-skyline)" d="M0 52 L0 38 L25 34 L50 40 L75 28 L100 36 L125 24 L150 32 L175 22 L200 30 L225 20 L250 28 L275 18 L300 26 L325 16 L350 24 L375 18 L400 22 L400 52 Z"/>
-            </svg>
+            <img
+                src="{{ asset('images/hero-trafico.png') }}"
+                alt=""
+                class="midgt-hero__skyline"
+                loading="lazy"
+                width="400"
+                height="52"
+                aria-hidden="true"
+            />
 
             <div class="midgt-hero__top">
                 <div class="midgt-hero__photo">
@@ -72,10 +78,14 @@
         <div class="midgt-panel is-active" data-midgt-panel="vehicles" role="tabpanel" aria-labelledby="midgt-tab-vehicles">
             <a href="{{ $vehiclesUrl }}" class="midgt-vehicle-tile">
                 <div class="midgt-vehicle-tile__visual">
-                    <svg viewBox="0 0 120 48" fill="#ffffff" aria-hidden="true">
-                        <path d="M8 34h88l5-8h10l3 8H8z M14 24h68l8-12h12l5 12H14z" opacity="0.95"/>
-                        <circle cx="28" cy="38" r="6"/><circle cx="82" cy="38" r="6"/>
-                    </svg>
+                    <img
+                        src="{{ asset('images/dgt-news-remote-2.jpg') }}"
+                        alt=""
+                        loading="lazy"
+                        width="120"
+                        height="48"
+                        aria-hidden="true"
+                    />
                 </div>
                 <p class="midgt-vehicle-tile__label">{{ __('status.vehicles_card_label') }}</p>
                 @if ($vehicles->isNotEmpty())

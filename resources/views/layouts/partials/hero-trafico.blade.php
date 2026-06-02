@@ -1,26 +1,26 @@
 @php
-    /** Carrousel local — pas de chargement d’images depuis dgt.es */
+    /** Carrousel local avec images embarquées (pas de hotlink externe) */
     $heroSlides = [
         [
-            'bg' => 'hero-slide-bg-1',
+            'image' => 'images/dgt-news-remote-1.jpg',
             'title' => '018: atención a víctimas',
             'subtitle' => 'Un número gratuito de atención a víctimas de siniestros de tráfico, disponible las 24 horas.',
             'cta' => 'Más información',
         ],
         [
-            'bg' => 'hero-slide-bg-2',
+            'image' => 'images/dgt-news-remote-2.jpg',
             'title' => 'VMP y vehículos personales ligeros',
             'subtitle' => 'Registro, normas de circulación y trámites para patinetes y otros vehículos de movilidad personal.',
             'cta' => 'Trámites y normativa',
         ],
         [
-            'bg' => 'hero-slide-bg-3',
+            'image' => 'images/dgt-news-remote-3.jpg',
             'title' => 'V16 conectada a DGT 3.0',
             'subtitle' => 'La baliza de preseñalización de emergencia conectada: señalización digital y mayor seguridad en carretera.',
             'cta' => 'Tecnología e innovación',
         ],
         [
-            'bg' => 'hero-slide-bg-4',
+            'image' => 'images/hero-trafico.png',
             'title' => 'ITS y seguridad vial',
             'subtitle' => 'Sistemas inteligentes de transporte para mejorar la seguridad en carretera.',
             'cta' => 'Sede electrónica',
@@ -31,11 +31,19 @@
 @once
     @push('head')
         <style>
-            .hero-slide-bg-1 { background: linear-gradient(135deg, #0a2540 0%, #004481 45%, #1e5a8a 100%); }
-            .hero-slide-bg-2 { background: linear-gradient(135deg, #1a3a52 0%, #2563eb 50%, #0ea5e9 100%); }
-            .hero-slide-bg-3 { background: linear-gradient(135deg, #0f172a 0%, #334155 50%, #64748b 100%); }
-            .hero-slide-bg-4 { background: linear-gradient(135deg, #134e4a 0%, #0d9488 50%, #14b8a6 100%); }
             .hero-slide-panel { min-height: var(--hero-min-h, 420px); }
+            .hero-slide-media {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+            .hero-slide-overlay {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(180deg, rgba(7, 24, 46, 0.3) 0%, rgba(7, 24, 46, 0.75) 100%);
+            }
         </style>
     @endpush
 @endonce
@@ -48,8 +56,23 @@
     >
         <div class="swiper-wrapper">
             @foreach ($heroSlides as $slide)
+                @php
+                    $img = (string) ($slide['image'] ?? '');
+                    $fallback = 'images/hero-trafico.png';
+                    $resolvedImage = ($img !== '' && file_exists(public_path($img))) ? $img : $fallback;
+                @endphp
                 <div class="swiper-slide">
-                    <div class="hero-slide-panel {{ $slide['bg'] }} relative flex flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-16">
+                    <div class="hero-slide-panel relative flex flex-col justify-end px-6 pb-16 pt-24 sm:px-10 lg:px-16">
+                        <img
+                            src="{{ asset($resolvedImage) }}"
+                            alt=""
+                            class="hero-slide-media"
+                            loading="lazy"
+                            width="1600"
+                            height="640"
+                            aria-hidden="true"
+                        />
+                        <span class="hero-slide-overlay" aria-hidden="true"></span>
                         <div class="relative z-10 max-w-2xl text-white">
                             <h2 id="{{ $loop->first ? 'hero-principal-titulo' : '' }}" class="text-2xl font-bold sm:text-3xl lg:text-4xl">{{ $slide['title'] }}</h2>
                             <p class="mt-3 text-sm leading-relaxed text-white/90 sm:text-base">{{ $slide['subtitle'] }}</p>
