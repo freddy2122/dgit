@@ -315,6 +315,33 @@ if (! function_exists('midgt_acceso_href')) {
     }
 }
 
+if (! function_exists('portal_licence_status_href')) {
+    /**
+     * Consultation d’état : onglet résultat pour un client connecté avec dossier ou permis.
+     *
+     * @param  array<string, mixed>  $query
+     */
+    function portal_licence_status_href(array $query = []): string
+    {
+        if (isset($query['reset'])) {
+            return portal_route('licence.status', $query);
+        }
+
+        $user = auth()->user();
+        if ($user && ! isset($query['view'])) {
+            $hasDossier = $user->relationLoaded('permitApplications')
+                ? $user->permitApplications->isNotEmpty()
+                : $user->permitApplications()->exists();
+
+            if ($hasDossier || $user->licenseSummary || filled($user->verification_code)) {
+                $query['view'] = 'result';
+            }
+        }
+
+        return portal_route('licence.status', $query);
+    }
+}
+
 if (! function_exists('sede_locale')) {
     function sede_locale(): string
     {

@@ -17,32 +17,21 @@
                 <p class="mt-1 text-xs text-gray-500">{{ __('portal.verification.subtitle') }}</p>
             </div>
             <div class="flex flex-wrap gap-2">
-                <a href="{{ route('licence.status') }}" class="rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">{{ __('portal.verification.check_status') }}</a>
+                <a href="{{ portal_licence_status_href() }}" class="rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">{{ __('portal.verification.check_status') }}</a>
                 <a href="{{ route('documents.verify') }}" class="rounded-lg border border-[#004481] px-4 py-2 text-sm font-semibold text-[#004481] hover:bg-white">{{ __('portal.verification.verify_doc') }}</a>
             </div>
         </section>
     @endif
 
-    @if (! empty($exam['show']))
-        <section class="mb-6 rounded-xl border border-sky-200 bg-sky-50 p-5 shadow-sm">
-            <div class="flex flex-wrap items-center justify-between gap-3">
-                <div>
-                    <p class="text-xs font-semibold uppercase tracking-wide text-[#004481]">{{ __('status.exam_sede_title') }}</p>
-                    <p class="mt-1 text-sm text-gray-700">
-                        {{ __('status.exam_sede_grade') }} :
-                        <span class="font-semibold {{ ! empty($exam['passed']) ? 'text-emerald-700' : 'text-red-700' }}">
-                            {{ ! empty($exam['passed']) ? __('status.exam_grade_pass') : __('status.exam_grade_fail') }}
-                        </span>
-                        @if (isset($exam['score']) && $exam['score'] !== null)
-                            <span class="text-gray-600">({{ $exam['score'] }}/100)</span>
-                        @endif
-                    </p>
-                    <p class="mt-1 text-sm text-gray-600">{{ __('status.exam_sede_errors') }} : {{ $exam['errors'] ?? '—' }}</p>
-                </div>
-                <a href="{{ route('licence.status') }}" class="inline-flex min-h-[44px] items-center rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">
-                    {{ __('status.tab_result') }}
-                </a>
-            </div>
+    @if ($application || $license)
+        <section class="mb-8 flex justify-center">
+            @include('licence.partials.status-result-midgt', [
+                'user' => auth()->user(),
+                'profileUser' => auth()->user(),
+                'license' => $license,
+                'application' => $application,
+                'payload' => ['points' => $pts, 'exam' => $exam],
+            ])
         </section>
     @endif
 

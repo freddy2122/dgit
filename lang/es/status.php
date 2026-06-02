@@ -54,6 +54,7 @@ return [
     'exam_midgt_failed_line' => 'Examen no superado — consulte el detalle.',
     'exam_midgt_see_result' => 'Ver resultado',
     'exam_validation_tab' => 'Validación en curso… :percent %',
+    'midgt_points_cta' => 'Ver puntos',
     'exam_validation_body' => 'Su expediente está en tramitación. Progreso estimado: :percent %.',
     'midgt_tabs_label' => 'Secciones miDGT',
     'vehicles_card_label' => 'Vehículos',

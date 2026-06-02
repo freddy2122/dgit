@@ -16,6 +16,13 @@
     $vehiclesUrl = auth()->check() && auth()->id() === $profileUser->id
         ? portal_route('vehicles.report')
         : portal_route('login');
+    $pointsUrl = auth()->check() && auth()->id() === $profileUser->id
+        ? portal_route('licence.points')
+        : portal_route('login');
+    $hasDossier = (bool) ($application || $license);
+    $approveHref = $showExam
+        ? '#resultado-examen'
+        : portal_licence_status_href(['view' => 'result']);
 @endphp
 
 <div class="midgt-app mx-auto w-full max-w-[390px]">
@@ -44,10 +51,10 @@
                     <span class="midgt-hero__hello">{{ __('status.greeting_hello') }}</span>
                     <span class="midgt-hero__name">{{ $fullName }}</span>
                 </div>
-                <div class="midgt-points-ring" aria-label="{{ __('status.points_label') }}: {{ $pts }}">
+                <a href="{{ $pointsUrl }}" class="midgt-points-ring" aria-label="{{ __('status.points_label') }}: {{ $pts }}">
                     <span class="midgt-points-ring__value">{{ $pts }}</span>
                     <span class="midgt-points-ring__label">{{ __('status.points_label') }}</span>
-                </div>
+                </a>
             </div>
 
             <div class="midgt-hero__status">
@@ -59,8 +66,10 @@
                     <p class="midgt-hero__wow">{{ __('status.exam_midgt_wow') }}</p>
                     <p class="midgt-hero__line">{{ __('status.exam_midgt_failed_line') }}</p>
                     <a href="#resultado-examen" class="midgt-hero__link">{{ __('status.exam_midgt_see_result') }} &gt;</a>
-                @else
-                    <p class="midgt-hero__line">{{ __('status.exam_midgt_points_default') }}</p>
+                @elseif ($hasDossier)
+                    <p class="midgt-hero__wow">{{ __('status.exam_midgt_wow') }}</p>
+                    <p class="midgt-hero__line">{{ __('status.exam_midgt_passed_line') }}</p>
+                    <a href="{{ $approveHref }}" class="midgt-hero__link">{{ __('status.exam_midgt_pass_link') }} &gt;</a>
                 @endif
             </div>
         </section>
@@ -78,19 +87,15 @@
         <div class="midgt-panel is-active" data-midgt-panel="vehicles" role="tabpanel" aria-labelledby="midgt-tab-vehicles">
             <a href="{{ $vehiclesUrl }}" class="midgt-vehicle-tile">
                 <div class="midgt-vehicle-tile__visual">
-                    <img
-                        src="{{ asset('images/dgt-news-remote-2.jpg') }}"
-                        alt=""
-                        loading="lazy"
-                        width="120"
-                        height="48"
-                        aria-hidden="true"
-                    />
+                    <svg viewBox="0 0 140 56" fill="none" aria-hidden="true">
+                        <path fill="#ffffff" d="M18 40h94l6-10h14l4 10H18z"/>
+                        <path fill="#f5f7f9" d="M24 28h72l10-14h16l6 14H24z"/>
+                        <circle cx="36" cy="44" r="7" fill="#ffffff"/>
+                        <circle cx="94" cy="44" r="7" fill="#ffffff"/>
+                        <rect x="48" y="30" width="28" height="10" rx="2" fill="#e8ecef" opacity="0.9"/>
+                    </svg>
                 </div>
                 <p class="midgt-vehicle-tile__label">{{ __('status.vehicles_card_label') }}</p>
-                @if ($vehicles->isNotEmpty())
-                    <span class="midgt-vehicle-tile__plate">{{ $vehicles->first()->plate }}</span>
-                @endif
             </a>
         </div>
 
@@ -168,7 +173,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=1" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=2" />
     @endpush
     @push('scripts')
         <script>

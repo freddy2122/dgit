@@ -3,6 +3,7 @@
     $nav = $nav ?? [
         ['id' => 'dashboard', 'label' => __('portal.nav.dashboard'), 'href' => portal_route('dashboard'), 'icon' => 'home'],
         ['id' => 'points', 'label' => __('portal.nav.points'), 'href' => portal_route('licence.points'), 'icon' => 'card'],
+        ['id' => 'status', 'label' => __('status.tab_result'), 'href' => portal_licence_status_href(), 'icon' => 'doc'],
         ['id' => 'demarches', 'label' => __('portal.nav.demarches'), 'href' => portal_route('portal.demarches'), 'icon' => 'doc'],
         ['id' => 'vehicles', 'label' => __('portal.nav.vehicles'), 'href' => portal_route('vehicles.report'), 'icon' => 'car'],
         ['id' => 'fines', 'label' => __('portal.nav.fines'), 'href' => portal_route('multas.index'), 'icon' => 'doc'],

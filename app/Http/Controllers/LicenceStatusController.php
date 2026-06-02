@@ -33,6 +33,10 @@ class LicenceStatusController extends Controller
             return redirect()->to(portal_route('licence.status'));
         }
 
+        if (auth()->check() && $request->query('view') !== 'search') {
+            $this->syncSearchSessionForAuthenticatedUser($request, auth()->user());
+        }
+
         $userId = $request->session()->get('permit_search_user_id');
         $user = $userId
             ? User::query()->with(['licenseSummary', 'vehicles', 'permitApplications'])->find($userId)
@@ -48,7 +52,12 @@ class LicenceStatusController extends Controller
 
         $searched = (bool) $request->session()->get('permit_search_searched', false);
         $payload = $request->session()->get('permit_search_payload', []);
-        $activeTab = $request->query('view') === 'result' && $searched ? 'result' : 'search';
+        $view = $request->query('view');
+        $activeTab = match (true) {
+            $view === 'search' => 'search',
+            $searched && ($view === 'result' || ($view === null && auth()->check())) => 'result',
+            default => $searched ? 'result' : 'search',
+        };
 
         $photoSrc = $user && $searched && ($payload['found'] ?? false)
             ? portal_route('licence.status.photo')
@@ -131,8 +140,53 @@ class LicenceStatusController extends Controller
         }
 
         return redirect()
-            ->to(portal_route('licence.status', ['view' => 'result']))
+            ->to(portal_licence_status_href(['view' => 'result']))
             ->with('status_search_done', true);
+    }
+
+    private function syncSearchSessionForAuthenticatedUser(Request $request, User $user): void
+    {
+        $user = $user->fresh(['licenseSummary', 'vehicles']);
+        $sessionUserId = $request->session()->get('permit_search_user_id');
+
+        if ($sessionUserId === $user->id && $request->session()->get('permit_search_searched')) {
+            return;
+        }
+
+        $code = trim((string) ($user->verification_code ?? ''));
+        $input = $code !== ''
+            ? ['verification_code' => $code]
+            : [];
+
+        if ($input === [] && $user->nie && $user->birth_date) {
+            $input = [
+                'nie' => $user->nie,
+                'birth_day' => (int) $user->birth_date->format('d'),
+                'birth_month' => (int) $user->birth_date->format('m'),
+                'birth_year' => (int) $user->birth_date->format('Y'),
+            ];
+        }
+
+        if ($input === []) {
+            return;
+        }
+
+        $resolved = $this->statusSearch->resolve($input);
+        if (! ($resolved['found'] ?? false)) {
+            return;
+        }
+
+        $payload = $this->statusSearch->toPayload($resolved);
+        $application = $resolved['application'];
+        $foundUser = $resolved['user']?->fresh(['licenseSummary', 'vehicles']);
+
+        $request->session()->put('permit_search_searched', true);
+        $request->session()->put('permit_search_payload', $payload);
+        $request->session()->put('permit_search_result_id', $application?->id);
+
+        if ($foundUser) {
+            $request->session()->put('permit_search_user_id', $foundUser->id);
+        }
     }
 
     /** Photo DNI pour la consultation publique (session de recherche récente). */

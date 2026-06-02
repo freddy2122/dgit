@@ -99,7 +99,7 @@
     </section>
 
     <div class="mt-6 flex flex-wrap gap-3">
-        <a href="{{ portal_route('licence.status') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('tramite.go_status') }}</a>
+        <a href="{{ portal_licence_status_href(['view' => 'result']) }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('tramite.go_status') }}</a>
         <a href="{{ portal_route('portal.payments') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('tramite.go_payments') }}</a>
         <a href="{{ portal_route('portal.demarches') }}" class="text-sm font-semibold text-gray-600 hover:underline">{{ __('tramite.go_demarches') }}</a>
     </div>

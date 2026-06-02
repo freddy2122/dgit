@@ -51,7 +51,7 @@
                     <li><a href="{{ route('permis.index') }}" class="hover:underline">{{ __('site.sede.cards.permis.title') }}</a></li>
                     <li><a href="{{ sede_href('es/vehiculos/informacion-de-vehiculos/informe-de-un-vehiculo') }}" class="hover:underline">{{ __('site.sede.cards.vehicles.title') }}</a></li>
                     <li><a href="{{ route('multas.index') }}" class="hover:underline">{{ __('site.sede.cards.fines.title') }}</a></li>
-                    <li><a href="{{ portal_route('licence.status') }}" class="hover:underline">{{ __('portal.verification.check_status') }}</a></li>
+                    <li><a href="{{ portal_licence_status_href() }}" class="hover:underline">{{ __('portal.verification.check_status') }}</a></li>
                 </ul>
             </div>
             <div class="border-t border-white/20 pt-8 md:border-t-0 md:pt-0 lg:border-r lg:border-t-0 lg:px-8">

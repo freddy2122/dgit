@@ -24,7 +24,7 @@
                 <button type="button" data-copy-target="profile-verification-code" data-copied="{{ e(__('portal.verification.copied')) }}" class="rounded-lg border border-[#004481] px-4 py-2 text-sm font-semibold text-[#004481] hover:bg-white">
                     {{ __('portal.verification.copy') }}
                 </button>
-                <a href="{{ route('licence.status') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('portal.verification.check_status') }} →</a>
+                <a href="{{ portal_licence_status_href() }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('portal.verification.check_status') }} →</a>
                 <a href="{{ route('documents.verify') }}" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('portal.verification.verify_doc') }} →</a>
             </div>
         </section>

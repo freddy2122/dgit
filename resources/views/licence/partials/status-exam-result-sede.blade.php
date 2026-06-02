@@ -48,7 +48,7 @@
             {{ __('status.exam_sede_notice') }}
         </div>
 
-        <a href="{{ portal_route('licence.status') }}" class="sede-exam__back" data-status-tab="search">
+        <a href="{{ portal_licence_status_href(['view' => 'result']) }}" class="sede-exam__back">
             {{ __('status.exam_sede_back') }}
         </a>
     </div>

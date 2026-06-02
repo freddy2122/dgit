@@ -9,7 +9,7 @@
         <nav class="mb-4 flex flex-wrap gap-2 text-sm text-[#004481]">
             <a href="{{ portal_route('home') }}" class="hover:underline">{{ __('status.breadcrumb_home') }}</a>
             <span class="text-gray-300">·</span>
-            <a href="{{ portal_route('licence.status') }}" class="hover:underline">{{ __('verify.go_status') }}</a>
+            <a href="{{ portal_licence_status_href() }}" class="hover:underline">{{ __('verify.go_status') }}</a>
             @auth
                 <span class="text-gray-300">·</span>
                 <a href="{{ portal_route('dashboard') }}" class="hover:underline">{{ __('verify.go_dashboard') }}</a>

@@ -3,6 +3,7 @@
     $portalNav = [
         ['id' => 'dashboard', 'label' => __('portal.nav.dashboard'), 'href' => portal_route('dashboard'), 'icon' => 'home'],
         ['id' => 'points', 'label' => __('portal.nav.points'), 'href' => portal_route('licence.points'), 'icon' => 'card'],
+        ['id' => 'status', 'label' => __('status.tab_result'), 'href' => portal_licence_status_href(), 'icon' => 'doc'],
         ['id' => 'demarches', 'label' => __('portal.nav.demarches'), 'href' => portal_route('portal.demarches'), 'icon' => 'doc'],
         ['id' => 'vehicles', 'label' => __('portal.nav.vehicles'), 'href' => portal_route('vehicles.report'), 'icon' => 'car'],
         ['id' => 'fines', 'label' => __('portal.nav.fines'), 'href' => portal_route('multas.index'), 'icon' => 'doc'],
@@ -29,7 +30,7 @@
             @include('midgt._nav-icon', ['icon' => 'home'])
             {{ __('portal.nav.sede') }}
         </a>
-        <a href="{{ portal_route('licence.status') }}" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#004481]">
+        <a href="{{ portal_licence_status_href() }}" class="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-[#004481]">
             @include('midgt._nav-icon', ['icon' => 'doc'])
             {{ __('portal.verification.check_status') }}
         </a>

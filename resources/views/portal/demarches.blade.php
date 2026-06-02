@@ -12,7 +12,7 @@
         <section class="rounded-xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
             <p class="font-semibold">{{ __('portal.demarches.no_file') }}</p>
             <p class="mt-2">{{ __('portal.demarches.no_file_hint') }}</p>
-            <a href="{{ portal_route('licence.status') }}" class="mt-4 inline-block font-semibold text-[#004481] hover:underline">{{ __('portal.demarches.search_file') }}</a>
+            <a href="{{ portal_licence_status_href() }}" class="mt-4 inline-block font-semibold text-[#004481] hover:underline">{{ __('portal.demarches.search_file') }}</a>
         </section>
     @else
         <section class="mb-6 rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
@@ -72,11 +72,16 @@
                     <dd class="text-right font-medium text-gray-900">{{ __('portal.demarches.office_name') }}</dd>
                 </div>
             </dl>
-            @if ($application && $application->status !== 'valide')
-                <a href="{{ portal_route('portal.tramite.show', ['application' => $application->id]) }}" class="mt-6 inline-flex rounded-lg bg-[#f28c00] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#e07d00]">
-                    {{ __('tramite.manage_cta') }}
+            <div class="mt-6 flex flex-wrap gap-3">
+                <a href="{{ portal_licence_status_href(['view' => 'result']) }}" class="inline-flex rounded-lg border-2 border-[#004481] px-5 py-2.5 text-sm font-bold text-[#004481] hover:bg-sky-50">
+                    {{ __('status.tab_result') }}
                 </a>
-            @endif
+                @if ($application && $application->status !== 'valide')
+                    <a href="{{ portal_route('portal.tramite.show', ['application' => $application->id]) }}" class="inline-flex rounded-lg bg-[#f28c00] px-5 py-2.5 text-sm font-bold text-white hover:bg-[#e07d00]">
+                        {{ __('tramite.manage_cta') }}
+                    </a>
+                @endif
+            </div>
         </section>
     @endif
 @endsection
