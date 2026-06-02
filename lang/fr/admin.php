@@ -70,7 +70,7 @@ return [
     'tramitacion_block_hint' => 'Pourcentage affiché au client dans l’onglet « Validación en curso » de miDGT. Valeur actuelle vue par le client : :percent %.',
     'tramitacion_percent' => 'Progression %',
     'tramitacion_auto' => 'Revenir au calcul automatique (selon statut)',
-    'tramitacion_auto_hint' => 'Si le champ est vide, le pourcentage est calculé selon le statut du dossier (suggestion : :percent %).',
+    'tramitacion_auto_hint' => 'Si le champ est vide, le pourcentage suit le statut du dossier (suggestion actuelle : :percent %). Tant qu’une valeur est enregistrée (ex. 30), elle reste fixe jusqu’à modification ou retour au mode automatique.',
     'tramitacion_shown_auto' => 'Auto (:percent % affiché)',
     'save_tramitacion' => 'Enregistrer la progression',
     'tramitacion_updated' => 'Progression miDGT mise à jour.',

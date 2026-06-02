@@ -11,7 +11,11 @@
     $exam = $payload['exam'] ?? [];
     $showExam = ! empty($exam['show']);
     $examPassed = (bool) ($exam['passed'] ?? false);
-    $validationPct = max(0, min(100, (int) ($exam['validation_percent'] ?? 80)));
+    $validationPct = max(0, min(100, (int) (
+        $application
+            ? (new \App\Support\ExamResultPresenter($application, $profileUser, $license))->validationPercent()
+            : ($exam['validation_percent'] ?? 80)
+    )));
     $fullName = mb_strtoupper(trim(collect([$profileUser->last_name, $profileUser->first_name])->filter()->join(' ') ?: (string) ($profileUser->name ?? '')));
     if ($fullName === '') {
         $fullName = mb_strtoupper(__('status.holder_default'));
