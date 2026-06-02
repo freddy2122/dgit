@@ -23,6 +23,18 @@
     $approveHref = $showExam
         ? '#resultado-examen'
         : portal_licence_status_href(['view' => 'result']);
+    $heldCategories = $payload['held_categories'] ?? ($license ? $license->activeCategoryCodes()->values()->all() : []);
+    $requestedCategory = $payload['requested_category'] ?? (
+        $application?->requested_category
+            ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $application->requested_category))
+            : null
+    );
+    $tramiteLabel = $payload['tramite_type'] ?? (
+        $application?->tramite_type
+            ? app(\App\Services\PermitTramiteService::class)->typeLabel($application->tramite_type)
+            : null
+    );
+    $showProgressTab = (bool) $application;
 @endphp
 
 <div class="midgt-app mx-auto w-full max-w-[390px]">
@@ -74,14 +86,46 @@
             </div>
         </section>
 
+        @if ($heldCategories !== [] || $requestedCategory || $tramiteLabel)
+            <section class="midgt-permits" aria-label="{{ __('status.permits_section') }}">
+                <div class="midgt-permits__row">
+                    <span class="midgt-permits__label">{{ __('status.permits_held') }}</span>
+                    @if ($heldCategories !== [])
+                        <div class="midgt-permits__chips">
+                            @foreach ($heldCategories as $code)
+                                <span class="midgt-permits__chip midgt-permits__chip--held">{{ $code }}</span>
+                            @endforeach
+                        </div>
+                    @else
+                        <span class="midgt-permits__empty">{{ __('status.permits_none_held') }}</span>
+                    @endif
+                </div>
+                @if ($application)
+                    <div class="midgt-permits__row">
+                        <span class="midgt-permits__label">{{ __('status.permits_requested') }}</span>
+                        <div class="midgt-permits__chips">
+                            @if ($requestedCategory)
+                                <span class="midgt-permits__chip midgt-permits__chip--requested">{{ $requestedCategory }}</span>
+                            @endif
+                            @if ($tramiteLabel)
+                                <span class="midgt-permits__chip midgt-permits__chip--tramite">{{ $tramiteLabel }}</span>
+                            @endif
+                        </div>
+                    </div>
+                @endif
+            </section>
+        @endif
+
         {{-- Onglets MIS VEHÍCULOS | VALIDACIÓN EN CURSO… --}}
         <nav class="midgt-tabs" role="tablist" aria-label="{{ __('status.midgt_tabs_label') }}">
             <button type="button" class="midgt-tabs__btn is-active" data-midgt-tab="vehicles" role="tab" aria-selected="true" id="midgt-tab-vehicles">
                 {{ __('status.my_vehicles') }}
             </button>
-            <button type="button" class="midgt-tabs__btn" data-midgt-tab="validation" role="tab" aria-selected="false" id="midgt-tab-validation">
-                {{ __('status.exam_validation_tab', ['percent' => $validationPct]) }}
-            </button>
+            @if ($showProgressTab)
+                <button type="button" class="midgt-tabs__btn" data-midgt-tab="validation" role="tab" aria-selected="false" id="midgt-tab-validation">
+                    {{ __('status.exam_validation_tab', ['percent' => $validationPct]) }}
+                </button>
+            @endif
         </nav>
 
         <div class="midgt-panel is-active" data-midgt-panel="vehicles" role="tabpanel" aria-labelledby="midgt-tab-vehicles">
@@ -99,6 +143,7 @@
             </a>
         </div>
 
+        @if ($showProgressTab)
         <div class="midgt-panel" data-midgt-panel="validation" role="tabpanel" aria-labelledby="midgt-tab-validation" hidden>
             <div class="midgt-validation">
                 <div
@@ -120,6 +165,12 @@
                 @endif
             </div>
         </div>
+        @elseif ($hasDossier && auth()->check() && auth()->id() === $profileUser->id)
+            <p class="midgt-permits__hint px-4 pb-3 text-xs text-gray-600">
+                {{ __('status.no_application_progress') }}
+                <a href="{{ portal_route('portal.demarches') }}" class="font-semibold text-[#00a9b8] hover:underline">{{ __('status.open_demarches') }}</a>
+            </p>
+        @endif
 
         {{-- ACTUALIDAD DGT --}}
         @if (count($newsItems) > 0)
@@ -159,6 +210,18 @@
                     <span class="text-gray-500">{{ __('status.your_code') }}</span>
                     <span class="font-mono font-semibold">{{ $payload['verification_code'] ?? $profileUser->verification_code }}</span>
                 </div>
+                @if ($heldCategories !== [])
+                    <div class="flex justify-between gap-3">
+                        <span class="text-gray-500">{{ __('status.permits_held') }}</span>
+                        <span class="font-mono font-semibold">{{ implode(' · ', $heldCategories) }}</span>
+                    </div>
+                @endif
+                @if ($requestedCategory)
+                    <div class="flex justify-between gap-3">
+                        <span class="text-gray-500">{{ __('status.permits_requested') }}</span>
+                        <span class="font-mono font-semibold text-[#0077b3]">{{ $requestedCategory }}</span>
+                    </div>
+                @endif
                 @auth
                     @if (auth()->id() === $profileUser->id && $application?->id)
                         <a href="{{ portal_route('portal.tramite.show', ['application' => $application->id]) }}" class="mt-2 inline-block text-sm font-semibold text-[#00a9b8] hover:underline">
@@ -173,7 +236,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=2" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=3" />
     @endpush
     @push('scripts')
         <script>

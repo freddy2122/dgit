@@ -53,6 +53,15 @@
                         class="mt-1 w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm"
                     />
                 </div>
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">{{ __('admin.requested_category') }}</label>
+                    <select name="requested_category" class="mt-1 rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono">
+                        <option value="">—</option>
+                        @foreach ($categoryCodes as $code)
+                            <option value="{{ $code }}" @selected(strtoupper((string) old('requested_category', $application->requested_category)) === $code)>{{ $code }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <button type="submit" class="rounded-lg bg-[#004481] px-4 py-2 text-sm font-bold text-white">{{ __('admin.save_tramitacion') }}</button>
             </form>
             <form method="post" action="{{ route('admin.applications.update_tramitacion', $application) }}" class="mt-2">

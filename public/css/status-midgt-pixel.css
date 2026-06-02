@@ -254,6 +254,79 @@ a.midgt-points-ring:hover {
     color: #1a1a1a;
 }
 
+/* Permis (catégories) */
+.midgt-permits {
+    padding: 12px 16px 4px;
+    background: #fff;
+    border-top: 1px solid #e8ecef;
+}
+
+.midgt-permits__row {
+    margin-bottom: 10px;
+}
+
+.midgt-permits__row:last-child {
+    margin-bottom: 0;
+}
+
+.midgt-permits__label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #6b7280;
+}
+
+.midgt-permits__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.midgt-permits__chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: ui-monospace, monospace;
+    letter-spacing: 0.02em;
+}
+
+.midgt-permits__chip--held {
+    background: #e8f4f8;
+    color: #004481;
+    border: 1px solid #b8d4e8;
+}
+
+.midgt-permits__chip--requested {
+    background: #e6fafb;
+    color: #007a85;
+    border: 1px solid #7edce4;
+}
+
+.midgt-permits__chip--tramite {
+    background: #f3f4f6;
+    color: #374151;
+    border: 1px solid #e5e7eb;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.midgt-permits__empty {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.midgt-permits__hint {
+    background: #fafbfc;
+    border-top: 1px solid #e8ecef;
+}
+
 /* Onglet validation */
 .midgt-validation {
     padding: 8px 4px 12px;

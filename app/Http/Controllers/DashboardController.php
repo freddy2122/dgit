@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\ResolvesPortalUser;
+use App\Services\PermitStatusSearchService;
 use App\Services\PortalDashboardService;
 use App\Support\ExamResultPresenter;
 use Illuminate\View\View;
@@ -27,6 +28,19 @@ class DashboardController extends Controller
         $maxPts = $this->portal->maxPoints();
         $pts = $license?->points ?? 0;
         $exam = $application ? (new ExamResultPresenter($application, $user, $license))->toArray() : ['show' => false];
+        $statusPayload = $application
+            ? app(PermitStatusSearchService::class)->toPayload([
+                'found' => true,
+                'user' => $user,
+                'application' => $application,
+                'search_mode' => 'code',
+                'account_inactive' => false,
+            ])
+            : [
+                'points' => $pts,
+                'exam' => $exam,
+                'held_categories' => $license ? $license->activeCategoryCodes()->values()->all() : [],
+            ];
         $procedures = $this->portal->proceduresForUser($user)->all();
 
         $pendingPayments = $user->portalPayments()->whereIn('status', ['pending', 'awaiting_whatsapp'])->get();
@@ -47,6 +61,7 @@ class DashboardController extends Controller
             'pts' => $pts,
             'maxPts' => $maxPts,
             'exam' => $exam,
+            'statusPayload' => $statusPayload,
             'procedures' => $procedures,
             'hasLicenseData' => $this->portal->licenseIsPublishedForClient($license),
             'nextAppointment' => $nextAppointment,

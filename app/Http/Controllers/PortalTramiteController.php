@@ -53,11 +53,17 @@ class PortalTramiteController extends Controller
         $user = $application->user;
         $license = $user?->licenseSummary;
         $exam = (new ExamResultPresenter($application, $user, $license))->toArray();
+        $heldCategories = $license ? $license->activeCategoryCodes()->values()->all() : [];
         $tramitePayload = [
             'exam' => $exam,
             'points' => $license?->points ?? 0,
             'reference' => $application->reference_code,
             'status' => permit_status_label($application->status),
+            'held_categories' => $heldCategories,
+            'requested_category' => $application->requested_category
+                ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $application->requested_category))
+                : null,
+            'tramite_type' => $this->tramites->typeLabel($application->tramite_type ?? 'obtencion'),
         ];
 
         return view('portal.tramite-show', [

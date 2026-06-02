@@ -30,7 +30,7 @@
                 'profileUser' => auth()->user(),
                 'license' => $license,
                 'application' => $application,
-                'payload' => ['points' => $pts, 'exam' => $exam],
+                'payload' => $statusPayload ?? ['points' => $pts, 'exam' => $exam],
             ])
         </section>
     @endif

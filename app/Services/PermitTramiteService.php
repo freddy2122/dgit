@@ -72,6 +72,7 @@ class PermitTramiteService
         ?string $sedePath = null,
         ?UploadedFile $medicalCertificate = null,
         ?int $openedByUserId = null,
+        ?string $requestedCategory = null,
     ): PermitApplication {
         if ($this->requiresMedical($tramiteType) && ! $medicalCertificate) {
             throw ValidationException::withMessages([
@@ -88,8 +89,13 @@ class PermitTramiteService
         $birthDate = $user->birth_date ?? now()->subYears(25);
         $medicalPath = $medicalCertificate?->store('dgt_medical', 'local');
 
+        $requestedCategory = $requestedCategory !== null && $requestedCategory !== ''
+            ? strtoupper(preg_replace('/[^A-Z0-9]/', '', $requestedCategory))
+            : null;
+
         $payload = [
             'tramite_type' => $tramiteType,
+            'requested_category' => $requestedCategory,
             'reference_code' => $this->newReference($tramiteType),
             'status' => 'en_attente_paiement_whatsapp',
             'exam_score' => null,

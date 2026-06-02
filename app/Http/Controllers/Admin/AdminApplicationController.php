@@ -52,6 +52,7 @@ class AdminApplicationController extends Controller
         return view('admin.applications.create', [
             'users' => User::query()->where('role', 'user')->orderBy('name')->get(),
             'types' => config('dgt_tramites.types', []),
+            'categoryCodes' => \App\Models\LicenseSummary::categoryCodes(),
             'selectedUserId' => $request->integer('user_id') ?: null,
         ]);
     }
@@ -61,6 +62,7 @@ class AdminApplicationController extends Controller
         $validated = $request->validate([
             'user_id' => ['required', 'exists:users,id'],
             'tramite_type' => ['required', 'string', 'in:'.implode(',', array_keys(config('dgt_tramites.types', [])))],
+            'requested_category' => ['nullable', 'string', 'max:8'],
             'medical_certificate' => ['nullable', 'file', 'max:5120', 'mimes:jpg,jpeg,png,pdf'],
         ]);
 
@@ -73,6 +75,7 @@ class AdminApplicationController extends Controller
             null,
             $medical,
             auth()->id(),
+            $validated['requested_category'] ?? null,
         );
 
         $this->logger->log('application.create', $application);
@@ -94,6 +97,7 @@ class AdminApplicationController extends Controller
             'nextStatuses' => $this->nextStatuses($application->status),
             'suggestedTramitacionPercent' => $presenter->statusDefaultValidationPercent(),
             'clientTramitacionPercent' => $presenter->validationPercent(),
+            'categoryCodes' => \App\Models\LicenseSummary::categoryCodes(),
         ]);
     }
 
@@ -169,13 +173,22 @@ class AdminApplicationController extends Controller
     {
         $validated = $request->validate([
             'tramitacion_percent' => ['nullable', 'integer', 'min:0', 'max:100'],
+            'requested_category' => ['nullable', 'string', 'max:8'],
         ]);
 
-        $application->update([
+        $updates = [
             'tramitacion_percent' => $request->filled('tramitacion_percent')
                 ? (int) $validated['tramitacion_percent']
                 : null,
-        ]);
+        ];
+
+        if ($request->has('requested_category')) {
+            $updates['requested_category'] = filled($validated['requested_category'] ?? null)
+                ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $validated['requested_category']))
+                : null;
+        }
+
+        $application->update($updates);
 
         $this->logger->log('application.tramitacion_percent', $application, (string) ($application->tramitacion_percent ?? 'auto'));
 

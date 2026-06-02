@@ -23,6 +23,16 @@
             </select>
         </div>
         <div>
+            <label class="block text-sm font-medium text-gray-700">{{ __('admin.requested_category') }}</label>
+            <p class="text-xs text-gray-500">{{ __('admin.requested_category_hint') }}</p>
+            <select name="requested_category" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono">
+                <option value="">—</option>
+                @foreach ($categoryCodes as $code)
+                    <option value="{{ $code }}" @selected(old('requested_category') === $code)>{{ $code }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div>
             <label class="block text-sm font-medium text-gray-700">{{ __('tramite.medical_block') }}</label>
             <p class="text-xs text-gray-500">{{ __('admin.medical_upload_hint') }}</p>
             <input type="file" name="medical_certificate" accept=".jpg,.jpeg,.png,.pdf" class="mt-2 w-full text-sm" />

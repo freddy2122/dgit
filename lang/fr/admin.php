@@ -74,6 +74,8 @@ return [
     'tramitacion_shown_auto' => 'Auto (:percent % affiché)',
     'save_tramitacion' => 'Enregistrer la progression',
     'tramitacion_updated' => 'Progression miDGT mise à jour.',
+    'requested_category' => 'Catégorie visée (B, A1…)',
+    'requested_category_hint' => 'Affichée au client comme permis demandé (obtention, ajout de catégorie, etc.).',
     'notif_validated_title' => 'Dossier validé par la DGT',
     'notif_validated_body' => 'Votre demande :ref a été validée par un agent.',
     'notif_rejected_title' => 'Dossier refusé',

@@ -15,6 +15,7 @@ class PermitApplication extends Model
         'status',
         'reference_code',
         'tramite_type',
+        'requested_category',
         'exam_score',
         'exam_errors',
         'tramitacion_percent',

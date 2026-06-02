@@ -115,6 +115,12 @@ class PermitStatusSearchService
         $tramiteType = $application?->tramite_type;
         $typeLabel = $tramiteType ? $tramiteService->typeLabel($tramiteType) : null;
         $exam = (new ExamResultPresenter($application, $user, $license))->toArray();
+        $heldCategories = $license
+            ? $license->activeCategoryCodes()->values()->all()
+            : [];
+        $requestedCategory = $application?->requested_category
+            ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $application->requested_category))
+            : null;
 
         return [
             'found' => true,
@@ -137,6 +143,12 @@ class PermitStatusSearchService
             'points' => $license?->points ?? 0,
             'max_points' => LicenseSummary::MAX_POINTS,
             'category' => $license?->category,
+            'held_categories' => $heldCategories,
+            'held_categories_label' => $heldCategories !== []
+                ? implode(' · ', $heldCategories)
+                : ($license?->displayCategoryLabel() ?: null),
+            'requested_category' => $requestedCategory,
+            'tramite_type_raw' => $tramiteType,
             'valid_until' => $license?->valid_until?->format('d/m/Y'),
             'vehicles_count' => $user->vehicles->count(),
             'user_id' => $user->id,
