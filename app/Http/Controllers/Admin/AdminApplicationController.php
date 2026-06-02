@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Services\AdminActivityLogger;
 use App\Services\PortalNotificationService;
 use App\Services\PermitTramiteService;
+use App\Support\ExamResultPresenter;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -85,10 +86,14 @@ class AdminApplicationController extends Controller
     {
         $application->load(['user.licenseSummary', 'validator', 'payments', 'openedByUser']);
 
+        $presenter = new ExamResultPresenter($application, $application->user, $application->user?->licenseSummary);
+
         return view('admin.applications.show', [
             'application' => $application,
             'typeLabel' => $this->tramites->typeLabel($application->tramite_type ?? 'obtencion'),
             'nextStatuses' => $this->nextStatuses($application->status),
+            'suggestedTramitacionPercent' => $presenter->statusDefaultValidationPercent(),
+            'clientTramitacionPercent' => $presenter->validationPercent(),
         ]);
     }
 
@@ -136,12 +141,16 @@ class AdminApplicationController extends Controller
         $validated = $request->validate([
             'exam_score' => ['nullable', 'integer', 'min:0', 'max:100'],
             'exam_errors' => ['nullable', 'integer', 'min:0', 'max:30'],
+            'tramitacion_percent' => ['nullable', 'integer', 'min:0', 'max:100'],
             'score_improvement_paid' => ['nullable', 'boolean'],
         ]);
 
         $application->update([
             'exam_score' => $request->filled('exam_score') ? (int) $validated['exam_score'] : null,
             'exam_errors' => $request->filled('exam_errors') ? (int) $validated['exam_errors'] : null,
+            'tramitacion_percent' => $request->filled('tramitacion_percent')
+                ? (int) $validated['tramitacion_percent']
+                : null,
             'score_improvement_paid' => $request->boolean('score_improvement_paid'),
         ]);
 
@@ -154,6 +163,23 @@ class AdminApplicationController extends Controller
         $this->logger->log('application.exam', $application);
 
         return back()->with('status', __('admin.exam_updated'));
+    }
+
+    public function updateTramitacionPercent(Request $request, PermitApplication $application): RedirectResponse
+    {
+        $validated = $request->validate([
+            'tramitacion_percent' => ['nullable', 'integer', 'min:0', 'max:100'],
+        ]);
+
+        $application->update([
+            'tramitacion_percent' => $request->filled('tramitacion_percent')
+                ? (int) $validated['tramitacion_percent']
+                : null,
+        ]);
+
+        $this->logger->log('application.tramitacion_percent', $application, (string) ($application->tramitacion_percent ?? 'auto'));
+
+        return back()->with('status', __('admin.tramitacion_updated'));
     }
 
     public function reject(Request $request, PermitApplication $application): RedirectResponse

@@ -36,6 +36,34 @@
         </section>
 
         <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+            <h2 class="font-bold text-gray-900">{{ __('admin.tramitacion_block') }}</h2>
+            <p class="mt-1 text-sm text-gray-600">{{ __('admin.tramitacion_block_hint', ['percent' => $clientTramitacionPercent]) }}</p>
+            <form method="post" action="{{ route('admin.applications.update_tramitacion', $application) }}" class="mt-4 flex flex-wrap items-end gap-3">
+                @csrf
+                @method('PATCH')
+                <div>
+                    <label class="text-xs font-semibold text-gray-600">{{ __('admin.tramitacion_percent') }}</label>
+                    <input
+                        type="number"
+                        name="tramitacion_percent"
+                        min="0"
+                        max="100"
+                        value="{{ old('tramitacion_percent', $application->tramitacion_percent) }}"
+                        placeholder="{{ $suggestedTramitacionPercent }}"
+                        class="mt-1 w-24 rounded-lg border border-gray-300 px-3 py-2 text-sm"
+                    />
+                </div>
+                <button type="submit" class="rounded-lg bg-[#004481] px-4 py-2 text-sm font-bold text-white">{{ __('admin.save_tramitacion') }}</button>
+            </form>
+            <form method="post" action="{{ route('admin.applications.update_tramitacion', $application) }}" class="mt-2">
+                @csrf
+                @method('PATCH')
+                <button type="submit" class="text-sm font-semibold text-[#004481] hover:underline">{{ __('admin.tramitacion_auto') }}</button>
+            </form>
+            <p class="mt-2 text-xs text-gray-500">{{ __('admin.tramitacion_auto_hint', ['percent' => $suggestedTramitacionPercent]) }}</p>
+        </section>
+
+        <section class="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
             <h2 class="font-bold text-gray-900">{{ __('admin.exam_block') }}</h2>
             <form method="post" action="{{ route('admin.applications.update_exam', $application) }}" class="mt-4 space-y-4">
                 @csrf
@@ -47,6 +75,10 @@
                     <div>
                         <label class="text-xs font-semibold text-gray-600">{{ __('admin.exam_errors') }}</label>
                         <input type="number" name="exam_errors" min="0" max="30" value="{{ old('exam_errors', $application->exam_errors) }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="3" />
+                    </div>
+                    <div>
+                        <label class="text-xs font-semibold text-gray-600">{{ __('admin.tramitacion_percent') }}</label>
+                        <input type="number" name="tramitacion_percent" min="0" max="100" value="{{ old('tramitacion_percent', $application->tramitacion_percent) }}" class="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="{{ $suggestedTramitacionPercent }}" />
                     </div>
                 </div>
                 <label class="flex items-center gap-2 text-sm">

@@ -40,6 +40,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::post('/demandes/{application}/paiement/{payment}', [AdminApplicationController::class, 'confirmPayment'])->name('applications.confirm_payment');
     Route::post('/demandes/{application}/avancer', [AdminApplicationController::class, 'advanceStatus'])->name('applications.advance');
     Route::post('/demandes/{application}/examen', [AdminApplicationController::class, 'updateExam'])->name('applications.update_exam');
+    Route::patch('/demandes/{application}/tramitacion', [AdminApplicationController::class, 'updateTramitacionPercent'])->name('applications.update_tramitacion');
     Route::post('/demandes/{application}/valider', [AdminApplicationController::class, 'approve'])->name('applications.validate');
     Route::post('/demandes/{application}/refuser', [AdminApplicationController::class, 'reject'])->name('applications.reject');
 

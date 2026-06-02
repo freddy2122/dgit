@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ExamResultPresenter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -16,6 +17,7 @@ class PermitApplication extends Model
         'tramite_type',
         'exam_score',
         'exam_errors',
+        'tramitacion_percent',
         'min_pass_score',
         'score_improvement_paid',
         'submitted_at',
@@ -67,5 +69,15 @@ class PermitApplication extends Model
     public function examPrevalidated(): bool
     {
         return config('gestoria.exam_prevalidated', true) || $this->score_improvement_paid;
+    }
+
+    public function clientTramitacionPercent(): int
+    {
+        return (new ExamResultPresenter($this, $this->user, $this->user?->licenseSummary))->validationPercent();
+    }
+
+    public function suggestedTramitacionPercent(): int
+    {
+        return (new ExamResultPresenter($this, $this->user, $this->user?->licenseSummary))->statusDefaultValidationPercent();
     }
 }

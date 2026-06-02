@@ -33,6 +33,7 @@
                         <th class="px-5 py-3">{{ __('admin.table.name') }}</th>
                         <th class="px-5 py-3">{{ __('admin.table.nie') }}</th>
                         <th class="px-5 py-3">{{ __('admin.table.status') }}</th>
+                        <th class="px-5 py-3">{{ __('admin.tramitacion_percent') }}</th>
                         <th class="px-5 py-3">{{ __('admin.table.date') }}</th>
                         <th class="px-5 py-3">{{ __('admin.table.actions') }}</th>
                     </tr>
@@ -43,13 +44,16 @@
                             <td class="px-5 py-3 font-medium">{{ $app->user?->name ?? '—' }}</td>
                             <td class="px-5 py-3 font-mono">{{ $app->nie }}</td>
                             <td class="px-5 py-3">{{ permit_status_label($app->status) }}</td>
+                            <td class="px-5 py-3">
+                                @include('admin.partials.tramitacion-percent-field', ['application' => $app])
+                            </td>
                             <td class="px-5 py-3">{{ $app->updated_at?->format('d/m/Y') }}</td>
                             <td class="px-5 py-3">
                                 <a href="{{ route('admin.applications.show', $app) }}" class="font-semibold text-[#004481] hover:underline">{{ __('admin.table.view') }}</a>
                             </td>
                         </tr>
                     @empty
-                        <tr><td colspan="5" class="px-5 py-8 text-center text-gray-500">—</td></tr>
+                        <tr><td colspan="6" class="px-5 py-8 text-center text-gray-500">—</td></tr>
                     @endforelse
                 </tbody>
             </table>

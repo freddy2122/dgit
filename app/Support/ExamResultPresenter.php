@@ -98,6 +98,21 @@ class ExamResultPresenter
 
     public function validationPercent(): int
     {
+        $manual = $this->application?->tramitacion_percent;
+        if ($manual !== null) {
+            return max(0, min(100, (int) $manual));
+        }
+
+        return $this->validationPercentFromStatus();
+    }
+
+    public function statusDefaultValidationPercent(): int
+    {
+        return $this->validationPercentFromStatus();
+    }
+
+    private function validationPercentFromStatus(): int
+    {
         $status = $this->application?->status ?? 'en_attente';
 
         return match ($status) {
