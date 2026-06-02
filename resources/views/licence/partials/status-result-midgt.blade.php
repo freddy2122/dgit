@@ -112,8 +112,15 @@
                 <h2 class="midgt-news__title">{{ __('status.news_section_title') }}</h2>
                 <div class="midgt-news__scroll">
                     @foreach ($newsItems as $item)
+                        @php
+                            $configuredImage = (string) ($item['image'] ?? '');
+                            $fallbackImage = $loop->even ? 'images/sede-electronica-promo.png' : 'images/hero-trafico.png';
+                            $resolvedImage = ($configuredImage !== '' && file_exists(public_path($configuredImage)))
+                                ? $configuredImage
+                                : $fallbackImage;
+                        @endphp
                         <a href="{{ portal_route('home') }}" class="midgt-news__item">
-                            <img src="{{ asset($item['image'] ?? 'images/logo_dgt.svg') }}" alt="" loading="lazy" width="200" height="100" />
+                            <img src="{{ asset($resolvedImage) }}" alt="" loading="lazy" width="200" height="100" />
                             <p class="midgt-news__caption">{{ $item[$newsLocale] ?? $item['title_es'] ?? '' }}</p>
                         </a>
                     @endforeach
