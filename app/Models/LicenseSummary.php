@@ -82,6 +82,23 @@ class LicenseSummary extends Model
         return $this->activeCategoryRows()->pluck('code');
     }
 
+    /** @return list<string> */
+    public function heldCategoryCodesForDisplay(): array
+    {
+        $active = $this->activeCategoryCodes()->values()->all();
+        if ($active !== []) {
+            return $active;
+        }
+
+        if ($this->hasPublishedStatus() && filled($this->category)) {
+            $code = strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $this->category));
+
+            return $code !== '' ? [$code] : [];
+        }
+
+        return [];
+    }
+
     /** @return Collection<int, array{code: string, valid_from: ?string, valid_until: ?string, codes: ?string, active: bool}> */
     public function activeCategoryRows(): Collection
     {

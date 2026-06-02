@@ -4,6 +4,11 @@
     $found = $payload['found'] ?? (bool) $profileUser;
     $license = $profileUser?->licenseSummary;
     $application = $application ?? $legacyResult;
+    if (! $application && $profileUser) {
+        $application = $profileUser->relationLoaded('permitApplications')
+            ? $profileUser->permitApplications->sortByDesc('id')->first()
+            : $profileUser->permitApplications()->latest('id')->first();
+    }
 @endphp
 
 @if (! $found || ! $profileUser)

@@ -87,9 +87,9 @@ class ExamResultPresenter
 
     public function licenseClass(): string
     {
-        $requested = $this->application?->requested_category;
+        $requested = $this->application?->displayRequestedCategory($this->license);
         if (is_string($requested) && $requested !== '') {
-            return strtoupper(preg_replace('/[^A-Z0-9]/', '', $requested)) ?: 'B';
+            return $requested;
         }
 
         $category = $this->license?->category;

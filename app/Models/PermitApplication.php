@@ -81,4 +81,22 @@ class PermitApplication extends Model
     {
         return (new ExamResultPresenter($this, $this->user, $this->user?->licenseSummary))->statusDefaultValidationPercent();
     }
+
+    public function displayRequestedCategory(?LicenseSummary $license = null): ?string
+    {
+        if (filled($this->requested_category)) {
+            return strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $this->requested_category)) ?: null;
+        }
+
+        $license ??= $this->user?->licenseSummary;
+        if (! $license || ! filled($license->category)) {
+            return null;
+        }
+
+        if (! in_array($this->tramite_type ?? 'obtencion', ['obtencion', 'canje'], true)) {
+            return null;
+        }
+
+        return strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $license->category)) ?: null;
+    }
 }

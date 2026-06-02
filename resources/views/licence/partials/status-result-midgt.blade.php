@@ -1,6 +1,11 @@
 @php
     $profileUser = $profileUser ?? $user;
     $license = $license ?? $profileUser?->licenseSummary;
+    if (! ($application ?? null) && $profileUser) {
+        $application = $profileUser->relationLoaded('permitApplications')
+            ? $profileUser->permitApplications->sortByDesc('id')->first()
+            : $profileUser->permitApplications()->latest('id')->first();
+    }
     $vehicles = $profileUser?->vehicles ?? collect();
     $pts = (int) ($payload['points'] ?? $license?->points ?? 0);
     $exam = $payload['exam'] ?? [];
@@ -23,12 +28,8 @@
     $approveHref = $showExam
         ? '#resultado-examen'
         : portal_licence_status_href(['view' => 'result']);
-    $heldCategories = $payload['held_categories'] ?? ($license ? $license->activeCategoryCodes()->values()->all() : []);
-    $requestedCategory = $payload['requested_category'] ?? (
-        $application?->requested_category
-            ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $application->requested_category))
-            : null
-    );
+    $heldCategories = $payload['held_categories'] ?? ($license ? $license->heldCategoryCodesForDisplay() : []);
+    $requestedCategory = $payload['requested_category'] ?? $application?->displayRequestedCategory($license);
     $tramiteLabel = $payload['tramite_type'] ?? (
         $application?->tramite_type
             ? app(\App\Services\PermitTramiteService::class)->typeLabel($application->tramite_type)

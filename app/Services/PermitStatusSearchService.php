@@ -116,11 +116,9 @@ class PermitStatusSearchService
         $typeLabel = $tramiteType ? $tramiteService->typeLabel($tramiteType) : null;
         $exam = (new ExamResultPresenter($application, $user, $license))->toArray();
         $heldCategories = $license
-            ? $license->activeCategoryCodes()->values()->all()
+            ? $license->heldCategoryCodesForDisplay()
             : [];
-        $requestedCategory = $application?->requested_category
-            ? strtoupper(preg_replace('/[^A-Z0-9]/', '', (string) $application->requested_category))
-            : null;
+        $requestedCategory = $application?->displayRequestedCategory($license);
 
         return [
             'found' => true,

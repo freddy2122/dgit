@@ -172,8 +172,20 @@ class LicenceStatusController extends Controller
         }
 
         $resolved = $this->statusSearch->resolve($input);
+
         if (! ($resolved['found'] ?? false)) {
-            return;
+            $application = $user->permitApplications()->latest('id')->first();
+            if (! $application) {
+                return;
+            }
+
+            $resolved = [
+                'found' => true,
+                'search_mode' => 'code',
+                'user' => $user,
+                'application' => $application,
+                'account_inactive' => ! ($user->is_active ?? true),
+            ];
         }
 
         $payload = $this->statusSearch->toPayload($resolved);
