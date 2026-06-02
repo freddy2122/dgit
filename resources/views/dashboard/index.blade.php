@@ -23,6 +23,29 @@
         </section>
     @endif
 
+    @if (! empty($exam['show']))
+        <section class="mb-6 rounded-xl border border-sky-200 bg-sky-50 p-5 shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wide text-[#004481]">{{ __('status.exam_sede_title') }}</p>
+                    <p class="mt-1 text-sm text-gray-700">
+                        {{ __('status.exam_sede_grade') }} :
+                        <span class="font-semibold {{ ! empty($exam['passed']) ? 'text-emerald-700' : 'text-red-700' }}">
+                            {{ ! empty($exam['passed']) ? __('status.exam_grade_pass') : __('status.exam_grade_fail') }}
+                        </span>
+                        @if (isset($exam['score']) && $exam['score'] !== null)
+                            <span class="text-gray-600">({{ $exam['score'] }}/100)</span>
+                        @endif
+                    </p>
+                    <p class="mt-1 text-sm text-gray-600">{{ __('status.exam_sede_errors') }} : {{ $exam['errors'] ?? '—' }}</p>
+                </div>
+                <a href="{{ route('licence.status') }}" class="inline-flex min-h-[44px] items-center rounded-lg bg-[#004481] px-4 py-2 text-sm font-semibold text-white hover:bg-[#003366]">
+                    {{ __('status.tab_result') }}
+                </a>
+            </div>
+        </section>
+    @endif
+
     <div class="grid gap-6 lg:grid-cols-2">
         <section class="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
             <div class="flex items-center justify-between border-b border-gray-100 bg-slate-50/80 px-5 py-4">

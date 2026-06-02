@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\ResolvesPortalUser;
 use App\Services\PortalDashboardService;
+use App\Support\ExamResultPresenter;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -25,6 +26,7 @@ class DashboardController extends Controller
         $application = $this->portal->resolveApplication($user);
         $maxPts = $this->portal->maxPoints();
         $pts = $license?->points ?? 0;
+        $exam = $application ? (new ExamResultPresenter($application, $user, $license))->toArray() : ['show' => false];
         $procedures = $this->portal->proceduresForUser($user)->all();
 
         $pendingPayments = $user->portalPayments()->whereIn('status', ['pending', 'awaiting_whatsapp'])->get();
@@ -44,6 +46,7 @@ class DashboardController extends Controller
             'vehicles' => $vehicles,
             'pts' => $pts,
             'maxPts' => $maxPts,
+            'exam' => $exam,
             'procedures' => $procedures,
             'hasLicenseData' => $this->portal->licenseIsPublishedForClient($license),
             'nextAppointment' => $nextAppointment,
