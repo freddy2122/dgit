@@ -115,12 +115,13 @@
                         @php
                             $configuredImage = (string) ($item['image'] ?? '');
                             $fallbackImage = $loop->even ? 'images/sede-electronica-promo.png' : 'images/hero-trafico.png';
-                            $resolvedImage = ($configuredImage !== '' && file_exists(public_path($configuredImage)))
+                            $isExternalImage = str_starts_with($configuredImage, 'http://') || str_starts_with($configuredImage, 'https://');
+                            $resolvedImage = $isExternalImage || ($configuredImage !== '' && file_exists(public_path($configuredImage)))
                                 ? $configuredImage
                                 : $fallbackImage;
                         @endphp
                         <a href="{{ portal_route('home') }}" class="midgt-news__item">
-                            <img src="{{ asset($resolvedImage) }}" alt="" loading="lazy" width="200" height="100" />
+                            <img src="{{ $isExternalImage ? $resolvedImage : asset($resolvedImage) }}" alt="" loading="lazy" width="200" height="100" />
                             <p class="midgt-news__caption">{{ $item[$newsLocale] ?? $item['title_es'] ?? '' }}</p>
                         </a>
                     @endforeach
