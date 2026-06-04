@@ -63,6 +63,8 @@ return [
     'permits_none_held' => 'Ninguna categoría registrada',
     'no_application_progress' => 'No hay expediente abierto: no se muestra el progreso.',
     'open_demarches' => 'Ver trámites',
+    'desktop_dossier_lead' => 'Estado del expediente: :status',
+    'desktop_validation_title' => 'Tramitación en curso (:percent %)',
     'vehicles_card_label' => 'Vehículos',
     'news_section_title' => 'Actualidad DGT',
     'exam_test_theory' => 'Teórico común',

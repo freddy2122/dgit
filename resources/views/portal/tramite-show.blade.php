@@ -14,7 +14,7 @@
     @endif
 
     @if (! empty($exam['show']))
-        <div class="mb-6 flex flex-col items-center gap-6">
+        <div class="mb-6 flex w-full flex-col gap-6">
             @include('licence.partials.status-result-midgt', [
                 'user' => $profileUser,
                 'profileUser' => $profileUser,

@@ -27,7 +27,7 @@
         </p>
     @endif
 
-    <div class="flex justify-center py-2">
+    <div class="status-result-responsive py-2">
         @include('licence.partials.status-result-midgt', [
             'user' => $profileUser,
             'profileUser' => $profileUser,

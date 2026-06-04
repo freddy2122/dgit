@@ -49,6 +49,8 @@ return [
     'permits_none_held' => 'Aucune catégorie enregistrée',
     'no_application_progress' => 'Aucun dossier ouvert : la progression n’est pas suivie.',
     'open_demarches' => 'Voir les démarches',
+    'desktop_dossier_lead' => 'État du dossier : :status',
+    'desktop_validation_title' => 'Tramitación en cours (:percent %)',
     'vehicles_card_label' => 'Véhicules',
     'news_section_title' => 'Actualité DGT',
     'exam_test_theory' => 'Théorique commun',

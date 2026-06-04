@@ -57,6 +57,7 @@ class PortalTramiteController extends Controller
         $tramitePayload = [
             'exam' => $exam,
             'points' => $license?->points ?? 0,
+            'max_points' => \App\Models\LicenseSummary::MAX_POINTS,
             'reference' => $application->reference_code,
             'status' => permit_status_label($application->status),
             'held_categories' => $heldCategories,

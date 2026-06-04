@@ -24,7 +24,7 @@
     @endif
 
     @if ($application || $license)
-        <section class="mb-8 flex justify-center">
+        <section class="mb-8">
             @include('licence.partials.status-result-midgt', [
                 'user' => auth()->user(),
                 'profileUser' => auth()->user(),
