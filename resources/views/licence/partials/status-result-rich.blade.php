@@ -27,7 +27,7 @@
         </p>
     @endif
 
-    <div class="status-result-responsive py-2">
+    <div class="status-result-responsive py-2 max-md:py-0">
         @include('licence.partials.status-result-midgt', [
             'user' => $profileUser,
             'profileUser' => $profileUser,

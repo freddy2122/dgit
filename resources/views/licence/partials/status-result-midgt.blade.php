@@ -62,7 +62,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=9" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=10" />
     @endpush
     @push('scripts')
         <script>
@@ -95,4 +95,6 @@
             });
         </script>
     @endpush
+    @include('portal.partials.mobile-nav-drawer', ['portalNavActive' => 'status'])
+    @include('partials.mobile-drawer-script', ['id' => 'status-midgt-nav'])
 @endonce

@@ -3,10 +3,15 @@
 @section('title', __('status.title'))
 
 @section('content')
+    @php
+        $activeTab = $activeTab ?? ($searched ? 'result' : 'search');
+        $isResultView = $activeTab === 'result' && $searched;
+    @endphp
+
     @include('portal.partials.search-loader')
 
-    <div class="mx-auto max-w-5xl px-4 py-8">
-        <nav class="mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#004481]">
+    <div class="status-page mx-auto max-w-5xl px-4 py-8 {{ $isResultView ? 'status-page--mobile-result max-md:px-0 max-md:pt-2 max-md:pb-4' : '' }}">
+        <nav class="status-page__chrome mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#004481] {{ $isResultView ? 'max-md:hidden' : '' }}">
             <a href="{{ portal_route('home') }}" class="font-medium hover:underline">{{ __('status.breadcrumb_home') }}</a>
             @guest
                 <span class="text-gray-300">·</span>
@@ -22,12 +27,12 @@
             <a href="{{ portal_route('documents.verify') }}" class="font-medium hover:underline">{{ __('verify.title') }}</a>
         </nav>
 
-        <h1 class="text-xl font-bold text-[#004481] sm:text-2xl">{{ __('status.title') }}</h1>
-        <p class="mt-1 max-w-3xl text-sm text-gray-600">{{ __('status.intro') }}</p>
+        <h1 class="status-page__chrome text-xl font-bold text-[#004481] sm:text-2xl {{ $isResultView ? 'max-md:hidden' : '' }}">{{ __('status.title') }}</h1>
+        <p class="status-page__chrome mt-1 max-w-3xl text-sm text-gray-600 {{ $isResultView ? 'max-md:hidden' : '' }}">{{ __('status.intro') }}</p>
 
         @auth
             @if ($authCode)
-                <div class="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm">
+                <div class="status-page__chrome mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm {{ $isResultView ? 'max-md:mx-4 max-md:mt-3' : '' }}">
                     <span class="text-gray-700">{{ __('status.auth_code_info') }}</span>
                     <code id="auth-verification-code" class="rounded bg-white px-3 py-1 font-mono text-base font-bold text-[#004481]">{{ $authCode }}</code>
                     <button type="button" data-copy-target="auth-verification-code" class="rounded-lg border border-[#004481] px-3 py-1 text-xs font-semibold text-[#004481] hover:bg-white">
@@ -47,12 +52,7 @@
             </div>
         @endif
 
-        @php
-            $activeTab = $activeTab ?? ($searched ? 'result' : 'search');
-            $isResultView = $activeTab === 'result' && $searched;
-        @endphp
-
-        <div class="mt-6 flex border-b border-gray-300 text-sm font-semibold" role="tablist">
+        <div class="mt-6 flex border-b border-gray-300 text-sm font-semibold {{ $isResultView ? 'max-md:mx-4 max-md:mt-4' : '' }}" role="tablist">
             <button
                 type="button"
                 id="tab-search"
@@ -77,7 +77,7 @@
             </button>
         </div>
 
-        <div class="overflow-hidden rounded-b-lg border border-t-0 border-gray-300 bg-[#eceff2] shadow-sm">
+        <div class="overflow-hidden rounded-b-lg border border-t-0 border-gray-300 bg-[#eceff2] shadow-sm {{ $isResultView ? 'max-md:mx-0 max-md:rounded-none max-md:border-x-0' : '' }}">
             <div class="{{ $isResultView ? '' : 'flex flex-col lg:flex-row' }}">
                 <div class="flex-1 {{ $isResultView ? 'min-w-0' : 'p-6' }}">
                     <div id="panel-search" class="{{ $activeTab === 'search' ? '' : 'hidden' }}">
@@ -144,19 +144,19 @@
                     </div>
 
                     <div id="panel-result" class="{{ $activeTab === 'result' ? '' : 'hidden' }}">
-                        <div class="bg-[#004481] px-4 py-2 text-sm font-semibold text-white">
+                        <div class="bg-[#004481] px-4 py-2 text-sm font-semibold text-white {{ $isResultView ? 'max-md:hidden' : '' }}">
                             {{ __('status.result_title') }}
                         </div>
-                        <div class="border border-t-0 border-gray-300 bg-white">
+                        <div class="border border-t-0 border-gray-300 bg-white {{ $isResultView ? 'max-md:border-0 max-md:bg-[#f0f4f8]' : '' }}">
                             @if ($searched)
-                                <div class="w-full p-4 sm:p-6">
+                                <div class="w-full p-4 sm:p-6 {{ $isResultView ? 'max-md:p-0' : '' }}">
                                 @include('licence.partials.status-result-rich', [
                                     'user' => $user ?? null,
                                     'application' => $application ?? null,
                                     'payload' => $payload ?? [],
                                     'photoSrc' => $photoSrc ?? null,
                                 ])
-                                <div class="mt-6 border-t border-gray-100 pt-4">
+                                <div class="mt-6 border-t border-gray-100 pt-4 {{ $isResultView ? 'max-md:hidden' : '' }}">
                                     <a href="{{ portal_route('licence.status') }}" data-status-tab="search" class="text-sm font-semibold text-[#004481] hover:underline">
                                         ← {{ __('status.tab_search') }}
                                     </a>
@@ -176,7 +176,7 @@
             </div>
         </div>
 
-        <div class="mt-6 flex flex-wrap gap-4 text-sm">
+        <div class="status-page__chrome mt-6 flex flex-wrap gap-4 text-sm {{ $isResultView ? 'max-md:hidden' : '' }}">
             @guest
                 <a href="{{ portal_route('login') }}" class="font-semibold text-[#004481] hover:underline">{{ __('status.login_cta') }}</a>
                 <a href="{{ portal_route('portal.inscription') }}" class="font-semibold text-[#f28c00] hover:underline">{{ __('status.register_cta') }}</a>
