@@ -5,6 +5,8 @@ return [
     'meta' => 'Suivi du permis de conduire — espace de vérification',
     'breadcrumb_home' => 'Accueil',
     'breadcrumb_dashboard' => 'Mon espace miDGT',
+    'mobile_menu_section' => 'Navigation',
+    'mobile_menu_portal' => 'Mon espace',
     'breadcrumb_guide' => 'Guide permis',
     'create_account' => 'Créer un compte',
     'intro' => 'Consultez l’état de votre demande ou renouvellement de permis. Utilisez votre code de vérification unique ou vos données d’identité.',

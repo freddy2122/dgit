@@ -731,7 +731,19 @@ a.midgt-points-ring:hover {
     }
 }
 
+.status-page-midgt-shell {
+    background: #fff;
+}
+
 @media (max-width: 767px) {
+    .status-page .status-page__chrome--breadcrumbs {
+        display: none;
+    }
+
+    .status-page--mobile-result .status-page__chrome {
+        display: none;
+    }
+
     .status-page--mobile-result .status-result-responsive__mobile .midgt-app {
         max-width: 100%;
     }

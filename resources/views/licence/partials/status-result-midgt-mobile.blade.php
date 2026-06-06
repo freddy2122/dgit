@@ -1,5 +1,4 @@
 <div class="midgt-app w-full">
-    @include('licence.partials.midgt-mobile-header')
     <article class="midgt-app__card">
         {{-- Hero profil + puntos (capture miDGT) --}}
         <section class="midgt-hero" aria-label="miDGT">

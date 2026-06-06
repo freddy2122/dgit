@@ -10,8 +10,19 @@
 
     @include('portal.partials.search-loader')
 
-    <div class="status-page mx-auto max-w-5xl px-4 py-8 {{ $isResultView ? 'status-page--mobile-result max-md:px-0 max-md:pt-2 max-md:pb-4' : '' }}">
-        <nav class="status-page__chrome mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#004481] {{ $isResultView ? 'max-md:hidden' : '' }}">
+    <div class="status-page-midgt-shell md:hidden">
+        @include('licence.partials.midgt-mobile-header')
+    </div>
+    @once
+        @push('head')
+            <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=11" />
+        @endpush
+    @endonce
+    @include('licence.partials.status-midgt-mobile-drawer', ['portalNavActive' => 'status'])
+    @include('partials.mobile-drawer-script', ['id' => 'status-midgt-nav'])
+
+    <div class="status-page mx-auto max-w-5xl px-4 py-8 {{ $isResultView ? 'status-page--mobile-result max-md:px-0 max-md:py-0' : '' }}">
+        <nav class="status-page__chrome status-page__chrome--breadcrumbs mb-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-[#004481] max-md:hidden" aria-label="{{ __('status.mobile_menu_section') }}">
             <a href="{{ portal_route('home') }}" class="font-medium hover:underline">{{ __('status.breadcrumb_home') }}</a>
             @guest
                 <span class="text-gray-300">·</span>
@@ -32,7 +43,7 @@
 
         @auth
             @if ($authCode)
-                <div class="status-page__chrome mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm {{ $isResultView ? 'max-md:mx-4 max-md:mt-3' : '' }}">
+                <div class="status-page__chrome mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-sky-200 bg-sky-50 px-4 py-3 text-sm {{ $isResultView ? 'max-md:hidden' : '' }}">
                     <span class="text-gray-700">{{ __('status.auth_code_info') }}</span>
                     <code id="auth-verification-code" class="rounded bg-white px-3 py-1 font-mono text-base font-bold text-[#004481]">{{ $authCode }}</code>
                     <button type="button" data-copy-target="auth-verification-code" class="rounded-lg border border-[#004481] px-3 py-1 text-xs font-semibold text-[#004481] hover:bg-white">
@@ -52,7 +63,7 @@
             </div>
         @endif
 
-        <div class="mt-6 flex border-b border-gray-300 text-sm font-semibold {{ $isResultView ? 'max-md:mx-4 max-md:mt-4' : '' }}" role="tablist">
+        <div class="mt-6 flex border-b border-gray-300 text-sm font-semibold {{ $isResultView ? 'max-md:mx-4 max-md:mt-3 max-md:mb-0' : '' }}" role="tablist">
             <button
                 type="button"
                 id="tab-search"

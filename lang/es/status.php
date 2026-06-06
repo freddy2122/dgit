@@ -5,6 +5,8 @@ return [
     'meta' => 'Seguimiento de permiso de conducción — área de verificación',
     'breadcrumb_home' => 'Inicio',
     'breadcrumb_dashboard' => 'Mi espacio miDGT',
+    'mobile_menu_section' => 'Navegación',
+    'mobile_menu_portal' => 'Mi espacio',
     'breadcrumb_guide' => 'Guía permisos',
     'create_account' => 'Crear cuenta',
     'intro' => 'Consulte el estado de su solicitud o renovación del permiso de conducción. Utilice su código de verificación único o sus datos de identidad.',
