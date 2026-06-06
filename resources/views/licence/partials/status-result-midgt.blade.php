@@ -62,7 +62,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=8" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=9" />
     @endpush
     @push('scripts')
         <script>

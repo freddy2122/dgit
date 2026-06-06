@@ -119,7 +119,7 @@
                     data-pct="{{ $validationPct }}"
                     @style(['--validation-pct' => $validationPct.'%'])
                 >
-                    <div class="midgt-validation__fill"></div>
+                    <div class="midgt-validation__fill" @style(['width' => $validationPct.'%'])></div>
                 </div>
                 <p class="midgt-validation__text">{{ __('status.exam_validation_body', ['percent' => $validationPct]) }}</p>
                 @if ($application?->reference_code)

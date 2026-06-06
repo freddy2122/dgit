@@ -362,6 +362,7 @@ a.midgt-points-ring:hover {
 }
 
 .midgt-validation__bar {
+    --midgt-teal: #00a9b8;
     display: block;
     height: 10px;
     overflow: hidden;
@@ -374,9 +375,11 @@ a.midgt-points-ring:hover {
     display: block;
     width: var(--validation-pct, 0%);
     min-width: 0;
+    max-width: 100%;
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, #008a96 0%, var(--midgt-teal) 45%, #00c4d4 100%);
+    background-color: #00a9b8;
+    background-image: linear-gradient(90deg, #008a96 0%, #00a9b8 45%, #00c4d4 100%);
     box-shadow: 0 0 0 1px rgba(0, 105, 115, 0.15);
     transition: width 0.4s ease;
 }
@@ -642,6 +645,7 @@ a.midgt-points-ring:hover {
 
 /* —— Vue bureau (≥ lg) —— */
 .status-result-responsive {
+    --midgt-teal: #00a9b8;
     width: 100%;
 }
 
