@@ -21,7 +21,14 @@
         $fullName = mb_strtoupper(__('status.holder_default'));
     }
     $newsLocale = portal_locale() === 'fr' ? 'title_fr' : 'title_es';
-    $newsItems = config('dgt_midgt_news', []);
+    $newsItems = collect(config('dgt_midgt_news', []))
+        ->filter(function (array $item) use ($newsLocale): bool {
+            $title = trim((string) ($item[$newsLocale] ?? $item['title_es'] ?? $item['title_fr'] ?? ''));
+
+            return $title !== '';
+        })
+        ->values()
+        ->all();
     $vehiclesUrl = auth()->check() && auth()->id() === $profileUser->id
         ? portal_route('vehicles.report')
         : portal_route('login');
@@ -55,7 +62,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=6" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=8" />
     @endpush
     @push('scripts')
         <script>

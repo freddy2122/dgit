@@ -2,17 +2,18 @@
     <article class="midgt-app__card">
         {{-- Hero profil + puntos (capture miDGT) --}}
         <section class="midgt-hero" aria-label="miDGT">
+            <div class="midgt-hero__backdrop" aria-hidden="true"></div>
             <img
-                src="{{ asset('images/hero-trafico.png') }}"
+                src="{{ asset('images/midgt-hero-skyline.svg') }}"
                 alt=""
                 class="midgt-hero__skyline"
                 loading="lazy"
-                width="400"
-                height="52"
+                width="390"
+                height="64"
                 aria-hidden="true"
             />
 
-            <div class="midgt-hero__top">
+            <div class="midgt-hero__layout">
                 <div class="midgt-hero__photo">
                     @include('portal.partials.license-photo', [
                         'user' => $profileUser,
@@ -20,17 +21,18 @@
                         'photoSrc' => $photoSrc ?? null,
                     ])
                 </div>
+
                 <div class="midgt-hero__identity">
                     <span class="midgt-hero__hello">{{ __('status.greeting_hello') }}</span>
                     <span class="midgt-hero__name">{{ $fullName }}</span>
                 </div>
+
                 <a href="{{ $pointsUrl }}" class="midgt-points-ring" aria-label="{{ __('status.points_label') }}: {{ $pts }}">
                     <span class="midgt-points-ring__value">{{ $pts }}</span>
                     <span class="midgt-points-ring__label">{{ __('status.points_label') }}</span>
                 </a>
-            </div>
 
-            <div class="midgt-hero__status">
+                <div class="midgt-hero__status">
                 @if ($showExam && $examPassed)
                     <p class="midgt-hero__wow">{{ __('status.exam_midgt_wow') }}</p>
                     <p class="midgt-hero__line">{{ __('status.exam_midgt_passed_line') }}</p>
@@ -44,6 +46,7 @@
                     <p class="midgt-hero__line">{{ __('status.exam_midgt_passed_line') }}</p>
                     <a href="{{ $approveHref }}" class="midgt-hero__link">{{ __('status.exam_midgt_pass_link') }} &gt;</a>
                 @endif
+                </div>
             </div>
         </section>
 
@@ -114,6 +117,7 @@
                     aria-valuemin="0"
                     aria-valuemax="100"
                     data-pct="{{ $validationPct }}"
+                    @style(['--validation-pct' => $validationPct.'%'])
                 >
                     <div class="midgt-validation__fill"></div>
                 </div>
@@ -133,8 +137,7 @@
             </p>
         @endif
 
-        {{-- ACTUALIDAD DGT --}}
-        @if (count($newsItems) > 0)
+        @if (! empty($newsItems))
             <section class="midgt-news" aria-label="{{ __('status.news_section_title') }}">
                 <h2 class="midgt-news__title">{{ __('status.news_section_title') }}</h2>
                 <div class="midgt-news__scroll">

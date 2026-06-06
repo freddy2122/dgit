@@ -3,9 +3,9 @@
 .midgt-app {
     --midgt-teal: #00a9b8;
     --midgt-blue: #0077b3;
-    --midgt-hero-from: #e4ebf2;
-    --midgt-hero-to: #d2dce6;
-    --midgt-skyline: #b8c5d0;
+    --midgt-hero-from: #f3f6f9;
+    --midgt-hero-to: #d4dfe8;
+    --midgt-skyline: #ffffff;
     --midgt-tab-muted: #8a96a3;
     --midgt-vehicle-grey: #e8ecef;
     --midgt-sede-panel: #d4e4f0;
@@ -24,9 +24,16 @@
 
 .midgt-hero {
     position: relative;
-    padding: 16px 16px 14px;
-    background: linear-gradient(180deg, var(--midgt-hero-from) 0%, var(--midgt-hero-to) 100%);
+    padding: 14px 14px 0;
     overflow: hidden;
+    background: linear-gradient(180deg, var(--midgt-hero-from) 0%, var(--midgt-hero-to) 72%, #c8d6e2 100%);
+}
+
+.midgt-hero__backdrop {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, var(--midgt-hero-from) 0%, var(--midgt-hero-to) 55%, #c5d4e0 100%);
+    pointer-events: none;
 }
 
 .midgt-hero__skyline {
@@ -34,44 +41,63 @@
     left: 0;
     right: 0;
     bottom: 0;
-    height: 52px;
+    z-index: 0;
+    display: block;
     width: 100%;
-    object-fit: cover;
+    height: 64px;
+    object-fit: fill;
     pointer-events: none;
-    opacity: 0.55;
 }
 
-.midgt-hero__top {
+.midgt-hero__layout {
     position: relative;
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
     z-index: 1;
+    display: grid;
+    grid-template-columns: 108px 1fr 88px;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 4px;
+    padding-bottom: 52px;
 }
 
 .midgt-hero__photo {
-    width: 72px;
-    height: 72px;
-    flex-shrink: 0;
+    grid-row: 1 / 3;
+    grid-column: 1;
+    align-self: start;
+    width: 108px;
+    height: 132px;
     overflow: hidden;
-    border-radius: 6px;
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    background: #c5d5e3;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    background: #b8c9d6;
+    box-shadow: 0 2px 8px rgba(0, 40, 70, 0.12);
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 72%,
+        92% 78%,
+        84% 70%,
+        74% 82%,
+        64% 74%,
+        54% 86%,
+        44% 76%,
+        34% 84%,
+        24% 72%,
+        14% 80%,
+        0 74%
+    );
 }
 
 .midgt-hero__photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: top;
+    object-position: top center;
 }
 
 .midgt-hero__identity {
-    flex: 1;
+    grid-column: 2 / 3;
+    grid-row: 1;
     min-width: 0;
-    padding-top: 2px;
-    padding-right: 4px;
+    padding-top: 4px;
 }
 
 .midgt-hero__hello {
@@ -96,13 +122,16 @@
 }
 
 a.midgt-points-ring {
-    flex-shrink: 0;
+    grid-column: 3;
+    grid-row: 1 / 3;
+    align-self: end;
+    justify-self: end;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 76px;
-    height: 76px;
+    width: 88px;
+    height: 88px;
     border: 2.5px solid #7eb8dc;
     border-radius: 50%;
     background: #fff;
@@ -133,11 +162,11 @@ a.midgt-points-ring:hover {
 }
 
 .midgt-hero__status {
-    position: relative;
-    z-index: 1;
-    margin-top: 12px;
-    padding-left: 0;
-    max-width: 58%;
+    grid-column: 2;
+    grid-row: 2;
+    align-self: start;
+    padding-top: 6px;
+    max-width: 100%;
 }
 
 .midgt-hero__wow {
@@ -333,16 +362,22 @@ a.midgt-points-ring:hover {
 }
 
 .midgt-validation__bar {
+    display: block;
     height: 10px;
     overflow: hidden;
     border-radius: 999px;
-    background: #e8ecef;
+    background: #dde3e8;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .midgt-validation__fill {
+    display: block;
+    width: var(--validation-pct, 0%);
+    min-width: 0;
     height: 100%;
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--midgt-teal), #00c4d4);
+    background: linear-gradient(90deg, #008a96 0%, var(--midgt-teal) 45%, #00c4d4 100%);
+    box-shadow: 0 0 0 1px rgba(0, 105, 115, 0.15);
     transition: width 0.4s ease;
 }
 
@@ -777,7 +812,7 @@ a.midgt-points-ring:hover {
 }
 
 .status-desktop__bar {
-    height: 12px;
+    height: 14px;
     margin-bottom: 12px;
 }
 

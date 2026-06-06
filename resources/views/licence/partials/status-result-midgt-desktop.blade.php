@@ -85,6 +85,7 @@
                         aria-valuemin="0"
                         aria-valuemax="100"
                         data-pct="{{ $validationPct }}"
+                        @style(['--validation-pct' => $validationPct.'%'])
                     >
                         <div class="midgt-validation__fill"></div>
                     </div>
@@ -109,7 +110,7 @@
                 </a>
             </section>
 
-            @if (count($newsItems) > 0)
+            @if (! empty($newsItems))
                 <section class="status-desktop__card">
                     <h2 class="status-desktop__card-title">{{ __('status.news_section_title') }}</h2>
                     <ul class="status-desktop__news">
