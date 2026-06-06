@@ -42,19 +42,20 @@
     $showProgressTab = (bool) $application;
 @endphp
 
-<div class="status-result-responsive">
-    <div class="status-result-responsive__mobile lg:hidden">
-        @include('licence.partials.status-result-midgt-mobile')
+<div class="status-result-responsive w-full">
+    {{-- Bureau par défaut (md et plus) ; carte miDGT sur petit écran --}}
+    <div class="status-result-responsive__desktop max-md:hidden">
+        @include('licence.partials.status-result-midgt-desktop')
     </div>
 
-    <div class="status-result-responsive__desktop hidden lg:block">
-        @include('licence.partials.status-result-midgt-desktop')
+    <div class="status-result-responsive__mobile hidden max-md:block">
+        @include('licence.partials.status-result-midgt-mobile')
     </div>
 </div>
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=5" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=6" />
     @endpush
     @push('scripts')
         <script>

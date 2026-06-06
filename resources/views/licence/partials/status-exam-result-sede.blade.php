@@ -5,7 +5,7 @@
 
 @if (! empty($exam['show']))
 <div id="resultado-examen" class="mt-6 scroll-mt-8">
-    <div class="sede-exam mx-auto w-full max-w-[420px]">
+    <div class="sede-exam mx-auto w-full max-w-full max-md:max-w-[390px]">
         <header class="sede-exam__header">
             <div class="sede-exam__logos">
                 <img src="{{ asset('images/logo_dgt.svg') }}" alt="DGT" width="80" height="28" />
@@ -56,7 +56,7 @@
 
 @once
     @push('head')
-        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=1" />
+        <link rel="stylesheet" href="{{ asset('css/status-midgt-pixel.css') }}?v=6" />
     @endpush
 @endonce
 @endif

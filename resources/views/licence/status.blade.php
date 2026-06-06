@@ -49,6 +49,7 @@
 
         @php
             $activeTab = $activeTab ?? ($searched ? 'result' : 'search');
+            $isResultView = $activeTab === 'result' && $searched;
         @endphp
 
         <div class="mt-6 flex border-b border-gray-300 text-sm font-semibold" role="tablist">
@@ -77,8 +78,8 @@
         </div>
 
         <div class="overflow-hidden rounded-b-lg border border-t-0 border-gray-300 bg-[#eceff2] shadow-sm">
-            <div class="flex flex-col lg:flex-row">
-                <div class="flex-1 p-6">
+            <div class="{{ $isResultView ? '' : 'flex flex-col lg:flex-row' }}">
+                <div class="flex-1 {{ $isResultView ? 'min-w-0' : 'p-6' }}">
                     <div id="panel-search" class="{{ $activeTab === 'search' ? '' : 'hidden' }}">
                         <div class="bg-[#004481] px-4 py-2 text-sm font-semibold text-white">
                             {{ __('status.form_title') }}
@@ -146,8 +147,9 @@
                         <div class="bg-[#004481] px-4 py-2 text-sm font-semibold text-white">
                             {{ __('status.result_title') }}
                         </div>
-                        <div class="border border-t-0 border-gray-300 bg-[#eceff2] p-3 sm:p-4">
+                        <div class="border border-t-0 border-gray-300 bg-white">
                             @if ($searched)
+                                <div class="w-full p-4 sm:p-6">
                                 @include('licence.partials.status-result-rich', [
                                     'user' => $user ?? null,
                                     'application' => $application ?? null,
@@ -159,13 +161,14 @@
                                         ← {{ __('status.tab_search') }}
                                     </a>
                                 </div>
+                                </div>
                             @else
                                 <p class="text-sm text-gray-600">{{ __('status.result_empty') }}</p>
                             @endif
                         </div>
                     </div>
                 </div>
-                <div class="hidden w-40 shrink-0 bg-gradient-to-l from-[#004481]/20 to-transparent lg:block" aria-hidden="true">
+                <div class="{{ $isResultView ? 'hidden' : 'hidden w-40 shrink-0 bg-gradient-to-l from-[#004481]/20 to-transparent lg:block' }}" aria-hidden="true">
                     <div class="flex h-full min-h-[280px] items-end justify-center pb-6 opacity-30">
                         <span class="text-7xl grayscale">🚗</span>
                     </div>
