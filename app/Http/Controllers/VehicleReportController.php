@@ -24,7 +24,7 @@ class VehicleReportController extends Controller
         ]);
     }
 
-    public function show(?Vehicle $vehicle = null): View
+    public function show(string $locale, ?Vehicle $vehicle = null): View
     {
         $user = $this->portalUser();
         $vehicle = $vehicle

@@ -40,7 +40,7 @@ class PortalTramiteController extends Controller
             ->with('status', __('tramite.started'));
     }
 
-    public function show(PermitApplication $application): View
+    public function show(string $locale, PermitApplication $application): View
     {
         $this->authorizeApplication($application);
 
@@ -78,12 +78,12 @@ class PortalTramiteController extends Controller
         ]);
     }
 
-    public function payScore(PermitApplication $application): RedirectResponse
+    public function payScore(string $locale, PermitApplication $application): RedirectResponse
     {
         abort(403, __('tramite.payment_whatsapp_only'));
     }
 
-    public function payFee(PermitApplication $application): RedirectResponse
+    public function payFee(string $locale, PermitApplication $application): RedirectResponse
     {
         abort(403, __('tramite.payment_whatsapp_only'));
     }
