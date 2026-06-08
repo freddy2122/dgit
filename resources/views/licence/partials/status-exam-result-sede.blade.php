@@ -15,7 +15,6 @@
                 </div>
             </div>
             <p class="sede-exam__sede-label">{{ __('status.exam_sede_office') }}</p>
-            <p class="sede-exam__sede-url">sede.dgt.gob.es</p>
         </header>
 
         <div class="sede-exam__title-wrap">

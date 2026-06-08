@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Sede Electrónica DGT — base pour les pages miroir locales.
+ * Sede Electrónica DGT — pages miroir locales sur ce portail uniquement.
  */
 return [
-    'base' => 'https://sede.dgt.gob.es',
+    'base' => rtrim((string) env('APP_URL', ''), '/'),
 ];

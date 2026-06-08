@@ -58,7 +58,7 @@ return [
     'es_servicios-sede_cambio-de-direccion' => [
         'role' => 'Cambio de domicilio fiscal del vehículo.',
         'intro' => ['Actualización del domicilio fiscal vinculado al vehículo para notificaciones y trámites.'],
-        'body' => ['Trámite telemático con Cl@ve. Algunos supuestos especiales se gestionan en registro electrónico en la sede oficial.'],
+        'body' => ['Trámite telemático con Cl@ve. Algunos supuestos especiales se gestionan en registro electrónico en este portal.'],
     ],
     'es_otros-tramites' => [
         'role' => 'Otros trámites de la Sede Electrónica.',

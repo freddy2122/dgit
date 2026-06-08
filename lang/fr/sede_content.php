@@ -178,7 +178,7 @@ $content = [
             'Démarches liées à vos véhicules : immatriculation, transferts, notification de vente, radiations et réhabilitations.',
         ],
         'body' => [
-            'Duplicata de documents, vignette environnementale, rapports véhicule, domicile fiscal et conducteur habituel. Les liens « Sede officielle » ouvrent sede.dgt.gob.es.',
+            'Duplicata de documents, vignette environnementale, rapports véhicule, domicile fiscal et conducteur habituel. Toutes les démarches sont accessibles sur ce portail.',
         ],
         'functions' => ['Rapport véhicule', 'Transferts', 'Immatriculation et radiations', 'Charges'],
     ],

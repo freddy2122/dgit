@@ -1,6 +1,6 @@
 <?php
 
-/** Pages Sede secondaires (alignées sur sede.dgt.gob.es). */
+/** Pages Sede secondaires du portail local. */
 return [
     'es/permisos-de-conducir/informe-de-conductor' => [
         'path' => 'es/permisos-de-conducir/informe-de-conductor',

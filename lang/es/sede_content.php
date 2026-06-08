@@ -2,7 +2,7 @@
 
 /**
  * Contenido editorial Sede Electrónica DGT (español).
- * Alineado con la estructura y mensajes de sede.dgt.gob.es.
+ * Contenido de las páginas Sede del portail local.
  */
 $content = [
     'es' => [
@@ -207,7 +207,7 @@ $content = [
         ],
         'steps' => [
             'Compruebe que su permiso español está en vigor.',
-            'Identifíquese con Cl@ve, certificado o DNIe en este portal o en la Sede oficial.',
+            'Identifíquese con Cl@ve, certificado o DNIe en este portal.',
             'Abone la tasa y recoja el permiso internacional en la oficina indicada o por los canales habilitados.',
         ],
         'functions' => [
@@ -229,7 +229,7 @@ $content = [
         ],
         'body' => [
             'También puedes obtener duplicado de la documentación, consultar el distintivo ambiental o informes de un vehículo, gestionar cambios en el domicilio fiscal del vehículo o comunicar un conductor habitual para tu vehículo.',
-            'Seleccione el trámite en el listado inferior o acceda a la sección correspondiente. Los enlaces marcados como «Sede oficial» abren el servicio telemático en sede.dgt.gob.es.',
+            'Seleccione el trámite en el listado inferior o acceda a la sección correspondiente. Todos los enlaces se gestionan en este portal.',
         ],
         'functions' => [
             'Informe completo de vehículo',

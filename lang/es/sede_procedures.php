@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Listados de trámites (estructura sede.dgt.gob.es) por página hub.
- * path = ruta local; official = ruta solo en sede oficial.
+ * Listados de trámites por página hub.
+ * path = ruta local; official = ruta adicional del catálogo Sede.
  */
 return [
     'es_vehiculos' => [

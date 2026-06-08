@@ -13,7 +13,6 @@
                         <li>
                             <a
                                 href="{{ sede_procedure_href($item) }}"
-                                @if (sede_procedure_is_official($item)) target="_blank" rel="noopener noreferrer" @endif
                                 class="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-sm font-semibold text-[#004481] transition hover:bg-white"
                             >
                                 <span>{{ $item['title'] ?? '' }}</span>

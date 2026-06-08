@@ -10,7 +10,7 @@ return [
 
     'mirror' => [
         'title_suffix' => 'Sede Electrónica',
-        'draft' => 'Cette URL n’est pas enregistrée dans le catalogue Sede de la maquette. Utilisez le lien officiel ou l’accueil Sede.',
+        'draft' => 'Cette URL n’est pas enregistrée dans le catalogue Sede de la maquette. Retournez à l’accueil Sede.',
     ],
 
     'page' => [
@@ -22,10 +22,10 @@ return [
         'requirements' => 'Prérequis',
         'start_tramite' => 'Démarrer la démarche sur ce portail',
         'login_to_continue' => 'S’identifier pour continuer',
-        'official_link' => 'Ouvrir sur sede.dgt.gob.es',
-        'official_note' => 'Sur le site officiel DGT : formulaire définitif et réglementation en vigueur.',
+        'official_link' => 'Continuer sur ce portail',
+        'official_note' => 'Finalisez la démarche sur ce portail avec votre identification électronique.',
         'procedure_groups' => 'Démarches disponibles',
-        'procedure_official_badge' => 'Sede officielle',
+        'procedure_official_badge' => 'Démarche télématique',
     ],
 
     'procedures' => require __DIR__.'/sede_procedures.php',

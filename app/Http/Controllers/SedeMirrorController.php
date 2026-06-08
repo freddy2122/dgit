@@ -47,7 +47,6 @@ class SedeMirrorController extends Controller
 
         return view('pages.sede-mirror', [
             'path' => $path,
-            'officialUrl' => sede_official_url($path),
             'title' => sede_page_title($path),
             'page' => $page,
             'sedeNav' => config('dgt_sede_nav', []),

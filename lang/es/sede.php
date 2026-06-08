@@ -10,7 +10,7 @@ return [
 
     'mirror' => [
         'title_suffix' => 'Sede Electrónica',
-        'draft' => 'Esta ruta no está registrada en el catálogo Sede de la maqueta. Utilice el enlace oficial o vuelva al inicio de la Sede.',
+        'draft' => 'Esta ruta no está registrada en el catálogo Sede de la maqueta. Vuelva al inicio de la Sede.',
     ],
 
     'page' => [
@@ -22,10 +22,10 @@ return [
         'requirements' => 'Requisitos',
         'start_tramite' => 'Iniciar trámite en este portal',
         'login_to_continue' => 'Identificarse para continuar',
-        'official_link' => 'Abrir en sede.dgt.gob.es',
-        'official_note' => 'En el sitio oficial de la DGT encontrará el formulario definitivo y la normativa vigente.',
+        'official_link' => 'Continuar en este portal',
+        'official_note' => 'Complete el trámite en este portal con su identificación electrónica.',
         'procedure_groups' => 'Trámites disponibles',
-        'procedure_official_badge' => 'Sede oficial',
+        'procedure_official_badge' => 'Trámite telemático',
     ],
 
     'services' => [
